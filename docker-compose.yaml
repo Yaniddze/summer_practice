@@ -14,6 +14,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    depends_on:
+      - web_app
 
   certbot:
     image: certbot/certbot:latest
@@ -23,16 +25,27 @@ services:
       - ./nginx/certbot/logs:/var/log/letsencrypt
       - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
 
-  # someapi:
-  #   build: ./TestApi/TestApi
-  #   restart: always
+  web_app:
+    build: ./web_app/
+    volumes:
+      - ./nginx/public_html:/app/build
+    depends_on:
+      - gateway
+    links:
+      - gateway
+
   
-  # gateway:
-  #   build: ./gateway
-  #   restart: always
-  #   ports:
-  #     - "5444:8080"
-  #   depends_on:
-  #     - someapi 
-  #   links:
-  #     - someapi
+  gateway:
+    build: ./gateway
+    restart: always
+    ports:
+      - "5444:8080"
+    depends_on:
+      - someapi 
+    links:
+      - someapi
+
+        
+  someapi:
+    build: ./TestApi/TestApi
+    restart: always
