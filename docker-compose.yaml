@@ -16,6 +16,8 @@ services:
       - 443:443
     depends_on:
       - web_app
+    links:
+      - gateway
 
   certbot:
     image: certbot/certbot:latest
@@ -34,7 +36,6 @@ services:
     links:
       - gateway
 
-  
   gateway:
     build: ./gateway
     restart: always
@@ -45,7 +46,7 @@ services:
     links:
       - someapi
 
-        
   someapi:
     build: ./TestApi/TestApi
     restart: always
+    
