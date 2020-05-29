@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+
+  server:
+    image: nginx:1.14.2-alpine
+    restart: always
+    volumes:
+      - ./nginx/public_html:/public_html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/dhparam:/etc/nginx/dhparam
+      - ./nginx/certbot/conf:/etc/nginx/ssl
+      - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+    ports:
+      - 80:80
+      - 443:443
+
+  certbot:
+    image: certbot/certbot:latest
+    command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email yanrus09@gmail.com --agree-tos --no-eff-email -d yaniddze.com
+    volumes:
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/logs:/var/log/letsencrypt
+      - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+
+  # someapi:
+  #   build: ./TestApi/TestApi
+  #   restart: always
+  
+  # gateway:
+  #   build: ./gateway
+  #   restart: always
+  #   ports:
+  #     - "5444:8080"
+  #   depends_on:
+  #     - someapi 
+  #   links:
+  #     - someapi
