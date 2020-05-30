@@ -39,8 +39,6 @@ services:
   gateway:
     build: ./gateway
     restart: always
-    ports:
-      - "5444:8080"
     depends_on:
       - someapi 
     links:
@@ -49,4 +47,3 @@ services:
   someapi:
     build: ./TestApi/TestApi
     restart: always
-    
