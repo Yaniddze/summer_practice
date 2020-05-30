@@ -1,1 +1,1 @@
-export const root = 'http://yaniddze.com/api';
+export const root = 'https://yaniddze.com/api';
