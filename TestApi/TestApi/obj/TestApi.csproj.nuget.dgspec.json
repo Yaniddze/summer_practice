@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/yan/Documents/proj/TestApi/TestApi/TestApi.csproj": {}
+    "/home/yan/Documents/summer_practice/TestApi/TestApi/TestApi.csproj": {}
   },
   "projects": {
-    "/home/yan/Documents/proj/TestApi/TestApi/TestApi.csproj": {
+    "/home/yan/Documents/summer_practice/TestApi/TestApi/TestApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/yan/Documents/proj/TestApi/TestApi/TestApi.csproj",
+        "projectUniqueName": "/home/yan/Documents/summer_practice/TestApi/TestApi/TestApi.csproj",
         "projectName": "TestApi",
-        "projectPath": "/home/yan/Documents/proj/TestApi/TestApi/TestApi.csproj",
+        "projectPath": "/home/yan/Documents/summer_practice/TestApi/TestApi/TestApi.csproj",
         "packagesPath": "/home/yan/.nuget/packages/",
-        "outputPath": "/home/yan/Documents/proj/TestApi/TestApi/obj/",
+        "outputPath": "/home/yan/Documents/summer_practice/TestApi/TestApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/yan/.config/NuGet/NuGet.Config"

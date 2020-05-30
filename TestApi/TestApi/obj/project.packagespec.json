@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/yan/Documents/proj/TestApi/TestApi/TestApi.csproj",
+    "projectUniqueName": "/home/yan/Documents/summer_practice/TestApi/TestApi/TestApi.csproj",
     "projectName": "TestApi",
-    "projectPath": "/home/yan/Documents/proj/TestApi/TestApi/TestApi.csproj",
-    "outputPath": "/home/yan/Documents/proj/TestApi/TestApi/obj/",
+    "projectPath": "/home/yan/Documents/summer_practice/TestApi/TestApi/TestApi.csproj",
+    "outputPath": "/home/yan/Documents/summer_practice/TestApi/TestApi/obj/",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netcoreapp3.1"

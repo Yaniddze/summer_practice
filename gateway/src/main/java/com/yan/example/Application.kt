@@ -21,7 +21,7 @@ open class Application {
         return builder.routes()
             .route {
                 it
-                    .path("/weatherforecast")
+                    .path("/api/weatherforecast")
                     .uri(uri)
             }
             .build()
