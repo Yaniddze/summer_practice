@@ -44,3 +44,11 @@
 /home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Swashbuckle.AspNetCore.SwaggerUI.dll
 /home/yan/Documents/summer_practice/TestApi/TestApi/obj/Debug/netcoreapp3.1/TestApi.MvcApplicationPartsAssemblyInfo.cs
 /home/yan/Documents/summer_practice/TestApi/TestApi/obj/Debug/netcoreapp3.1/TestApi.csproj.CopyComplete
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Logging.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Protocols.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Tokens.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/System.IdentityModel.Tokens.Jwt.dll
