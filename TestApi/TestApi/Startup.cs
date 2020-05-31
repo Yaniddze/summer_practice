@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using TestApi.Installers;
 using TestApi.Options;
 
 namespace TestApi
@@ -23,34 +16,13 @@ namespace TestApi
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
-        private const string Cors = "_myCors";
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: Cors, builder =>
-                {
-                    builder.AllowAnyHeader();
-                    builder.AllowAnyOrigin();
-                    builder.AllowAnyMethod();
-                });
-            });
-            services.AddSwaggerGen(x =>
-            {
-                x.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "MyApi",
-                    Version = "v1"
-                });
-            });
+            services.installServicesInAssemply(Configuration);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -66,7 +38,7 @@ namespace TestApi
             {
                 option.SwaggerEndpoint(swaggerOptions.UiEndpoint, swaggerOptions.Description);
             });
-            
+
             app.UseRouting();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
@@ -74,7 +46,12 @@ namespace TestApi
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseCors(Cors);
+            app.UseCors(x =>
+            {
+                x.AllowCredentials();
+                x.AllowAnyHeader();
+                x.AllowAnyMethod();
+            });
 
             app.UseAuthorization();
 
