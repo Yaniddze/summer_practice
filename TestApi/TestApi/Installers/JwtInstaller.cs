@@ -12,9 +12,9 @@ namespace TestApi.Installers
         public void installServices(IServiceCollection services, IConfiguration configuration)
         {
             var jwtOptions = new JwtOptions();
-
             configuration.Bind(nameof(JwtOptions), jwtOptions);
-
+            services.AddSingleton(jwtOptions);
+            
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -27,9 +27,9 @@ namespace TestApi.Installers
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtOptions.Secret)),
+                    IssuerSigningKey = new SymmetricSecurityKey(jwtOptions.SecretInBytes),
                     ValidateIssuer = false,
-                    ValidateAudience = true,
+                    ValidateAudience = false,
                     RequireExpirationTime = false,
                     ValidateLifetime = true,
                 };
