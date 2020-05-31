@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 
 namespace TestApi.Options
@@ -6,5 +7,6 @@ namespace TestApi.Options
     {
         public string Secret { get; set; }
         public byte[] SecretInBytes => Encoding.ASCII.GetBytes(Secret);
+        public int TokenLifeTimeInMinutes { get; set; }
     }
 }

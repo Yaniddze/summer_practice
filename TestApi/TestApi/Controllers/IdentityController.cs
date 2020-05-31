@@ -15,12 +15,28 @@ namespace TestApi.Controllers
             this._identityService = identityService;
         }
 
-        [HttpPost("v1/register")]
+        [HttpPost("api/register")]
         public async Task<IActionResult> register([FromBody] RegistrationRequest request)
         {
             var registerResponse = await _identityService.registerAsync(request.email, request.password);
             
             return Ok(registerResponse);
+        }
+        
+        [HttpPost("api/login")]
+        public async Task<IActionResult> login([FromBody] LoginRequest request)
+        {
+            var loginResponse = await _identityService.loginAsync(request.email, request.password);
+            
+            return Ok(loginResponse);
+        }
+
+        [HttpPost("api/refresh")]
+        public async Task<IActionResult> refresh([FromBody] RefreshTokenRequest request)
+        {
+            var refreshResponse = await _identityService.refreshTokenAsync(request.Token, request.RefreshToken);
+            
+            return Ok(refreshResponse);
         }
     }
 }
