@@ -3,11 +3,11 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TestApi.Controllers.Contract.Requests;
 using TestApi.Services;
+using TestApi.UseCases.Login;
 using TestApi.UseCases.Registration;
 
 namespace TestApi.Controllers
 {
-    
     public class IdentityController: Controller
     {
         private readonly IIdentityService _identityService;
@@ -30,9 +30,9 @@ namespace TestApi.Controllers
         [HttpPost("api/identity/login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var loginResponse = await _identityService.loginAsync(request.email, request.password);
-            
-            return Ok(loginResponse);
+//            var loginResponse = await _identityService.loginAsync(request.Email, request.Password);
+            var result = await _mediator.Send(request);
+            return Ok(result);
         }
 
         [HttpPost("api/identity/refresh")]
