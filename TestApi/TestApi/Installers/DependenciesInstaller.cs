@@ -11,6 +11,7 @@ namespace TestApi.Installers
         {
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRepository<TestApi.Entities.User>, UserRepository>();
+            services.AddScoped<IRepository<TestApi.Entities.RefreshToken>, TokenRepository>();
         }
     }
 }

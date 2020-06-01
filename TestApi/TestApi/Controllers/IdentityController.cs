@@ -30,7 +30,6 @@ namespace TestApi.Controllers
         [HttpPost("api/identity/login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-//            var loginResponse = await _identityService.loginAsync(request.Email, request.Password);
             var result = await _mediator.Send(request);
             return Ok(result);
         }
