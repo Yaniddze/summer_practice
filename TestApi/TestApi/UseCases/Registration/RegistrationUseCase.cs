@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using TestApi.Entities;
 using TestApi.Repositories;
 
 namespace TestApi.UseCases.Registration
 {
-    public class RegistrationUseCase
+    public class RegistrationUseCase: IRequestHandler<RegistrationRequest, RegistrationAnswer>
     {
         private readonly IRepository<User> _userRepository;
 
@@ -15,10 +17,9 @@ namespace TestApi.UseCases.Registration
             _userRepository = userRepository;
         }
 
-        public async Task<RegistrationAnswer> RegisterAsync(string email, string login, string password)
+        public async Task<RegistrationAnswer> Handle(RegistrationRequest request, CancellationToken cancellationToken)
         {
-            
-            var foundedLogin = await _userRepository.FindOneWithPattern(user => user.Login == login);
+            var foundedLogin = await _userRepository.FindOneWithPatternAsync(user => user.Login == request.Login);
             if (!(foundedLogin is null))
             {
                 return new RegistrationAnswer
@@ -28,7 +29,7 @@ namespace TestApi.UseCases.Registration
                 };
             }
 
-            var foundedEmail = await _userRepository.FindOneWithPattern(user => user.Email == email);
+            var foundedEmail = await _userRepository.FindOneWithPatternAsync(user => user.Email == request.Email);
             if (!(foundedEmail is null))
             {
                 return new RegistrationAnswer
@@ -41,11 +42,11 @@ namespace TestApi.UseCases.Registration
             await _userRepository.InsertAsync(new User
             {
                 Id = Guid.NewGuid(),
-                Email = email,
+                Email = request.Email,
                 IsEmailConfirmed = false,
-                Login = login,
+                Login = request.Login,
                 Name = "",
-                Password = password,
+                Password = request.Password,
             });
 
             return new RegistrationAnswer

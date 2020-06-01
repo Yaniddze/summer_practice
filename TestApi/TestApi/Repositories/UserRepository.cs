@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using TestApi.Entities;
+
+namespace TestApi.Repositories
+{
+    public class UserRepository: IRepository<User>
+    {
+        private static readonly List<User> _users = new List<User>();
+        public Task<IEnumerable<User>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<User>> GetWithPatternAsync(Func<User, bool> pattern)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> FindOneWithPatternAsync(Func<User, bool> pattern)
+        {
+            return Task.FromResult(_users.FirstOrDefault(pattern));
+        }
+
+        public Task InsertAsync(User entity)
+        {
+            _users.Add(entity);
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(User entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SaveAsync()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

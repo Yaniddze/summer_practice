@@ -52,3 +52,5 @@
 /home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Tokens.dll
 /home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
 /home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/System.IdentityModel.Tokens.Jwt.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/MediatR.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/MediatR.Extensions.Microsoft.DependencyInjection.dll

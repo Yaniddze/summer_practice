@@ -1,7 +1,9 @@
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TestApi.Controllers.Contract.Requests;
 using TestApi.Services;
+using TestApi.UseCases.Registration;
 
 namespace TestApi.Controllers
 {
@@ -9,30 +11,32 @@ namespace TestApi.Controllers
     public class IdentityController: Controller
     {
         private readonly IIdentityService _identityService;
+        private readonly IMediator _mediator;
 
-        public IdentityController(IIdentityService identityService)
+        public IdentityController(IIdentityService identityService, IMediator mediator)
         {
             this._identityService = identityService;
+            _mediator = mediator;
         }
 
-        [HttpPost("api/register")]
-        public async Task<IActionResult> register([FromBody] RegistrationRequest request)
+        [HttpPost("api/identity/register")]
+        public async Task<IActionResult> Register([FromBody] RegistrationRequest request)
         {
-            var registerResponse = await _identityService.registerAsync(request.email, request.password);
-            
-            return Ok(registerResponse);
+            var result = await _mediator.Send(request);
+
+            return Ok(result);
         }
         
-        [HttpPost("api/login")]
-        public async Task<IActionResult> login([FromBody] LoginRequest request)
+        [HttpPost("api/identity/login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var loginResponse = await _identityService.loginAsync(request.email, request.password);
             
             return Ok(loginResponse);
         }
 
-        [HttpPost("api/refresh")]
-        public async Task<IActionResult> refresh([FromBody] RefreshTokenRequest request)
+        [HttpPost("api/identity/refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
         {
             var refreshResponse = await _identityService.refreshTokenAsync(request.Token, request.RefreshToken);
             
