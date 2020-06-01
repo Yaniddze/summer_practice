@@ -7,11 +7,11 @@ namespace Core
 {
     public interface IRepository<TEntity> where TEntity : Entity
     {
-        Task<IEnumerable<TEntity>> GetCustomers();        
-        TEntity GetById(Guid id);        
-        Task InsertCustomer(TEntity entity);        
-        Task DeleteCustomer(Guid id);        
-        Task UpdateCustomer(TEntity entity);        
-        Task Save(); 
+        Task<IEnumerable<TEntity>> GetCustomersAsync();        
+        TEntity GetByIdAsync(Guid id);        
+        Task InsertCustomerAsync(TEntity entity);        
+        Task DeleteCustomerAsync(Guid id);        
+        Task UpdateCustomerAsync(TEntity entity);        
+        Task SaveAsync(); 
     }
 }
