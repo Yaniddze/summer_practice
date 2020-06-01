@@ -197,7 +197,8 @@ namespace TestApi.Services
                     new Claim(JwtRegisteredClaimNames.Email, email),
                     new Claim("id", userId.ToString()),
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(_jwtOptions.TokenLifeTimeInMinutes),
+//              LifeTime: 5 Minutes by default + 0.01 minutes
+                Expires = DateTime.UtcNow.AddMinutes(0.01),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_jwtOptions.SecretInBytes),
                     SecurityAlgorithms.HmacSha256Signature)
             };
