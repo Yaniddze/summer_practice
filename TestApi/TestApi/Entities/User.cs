@@ -1,4 +1,4 @@
-namespace Core.Entities
+namespace TestApi.Entities
 {
     public class User: Entity
     {

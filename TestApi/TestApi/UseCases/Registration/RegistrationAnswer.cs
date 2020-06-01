@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Core.UseCases.Registration
+namespace TestApi.UseCases.Registration
 {
     public class RegistrationAnswer
     {

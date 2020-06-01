@@ -1,6 +1,6 @@
 using System;
 
-namespace Core.Entities
+namespace TestApi.Entities
 {
     public abstract class Entity
     {

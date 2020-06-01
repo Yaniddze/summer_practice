@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Entities;
+using TestApi.Entities;
+using TestApi.Repositories;
 
-namespace Core.UseCases.Registration
+namespace TestApi.UseCases.Registration
 {
     public class RegistrationUseCase
     {

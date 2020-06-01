@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Entities;
+using TestApi.Entities;
 
-namespace Core
+namespace TestApi.Repositories
 {
     public interface IRepository<TEntity> where TEntity : Entity
     {
