@@ -4,8 +4,8 @@ namespace TestApi.Controllers.Contract.Responses
 {
     public class RefreshTokenResponse
     {
-        public List<string> errors { get; set; } = new List<string>();
-        public string token { get; set; }
-        public string refreshToken { get; set; }
+        public bool Success { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
+        public string Token { get; set; }
     }
 }   

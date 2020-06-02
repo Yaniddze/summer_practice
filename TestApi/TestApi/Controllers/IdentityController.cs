@@ -1,23 +1,20 @@
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TestApi.Controllers.Contract.Requests;
 using TestApi.Controllers.Contract.Responses;
-using TestApi.Services;
 using TestApi.UseCases.GenerateToken;
 using TestApi.UseCases.Login;
+using TestApi.UseCases.RefreshToken;
 using TestApi.UseCases.Registration;
 
 namespace TestApi.Controllers
 {
     public class IdentityController: Controller
     {
-        private readonly IIdentityService _identityService;
         private readonly IMediator _mediator;
 
-        public IdentityController(IIdentityService identityService, IMediator mediator)
+        public IdentityController(IMediator mediator)
         {
-            this._identityService = identityService;
             _mediator = mediator;
         }
 
@@ -39,7 +36,6 @@ namespace TestApi.Controllers
                 Email = registrationResult.Email,
             });
             result.Token = tokens.Token;
-            result.RefreshToken = tokens.RefreshedToken;
 
             return Ok(result);
         }
@@ -62,7 +58,6 @@ namespace TestApi.Controllers
                 Email = loginResult.Email,
             });
             result.Token = tokens.Token;
-            result.RefreshToken = tokens.RefreshedToken;
 
             return Ok(result);
         }
@@ -70,9 +65,24 @@ namespace TestApi.Controllers
         [HttpPost("api/identity/refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
         {
-            var refreshResponse = await _identityService.refreshTokenAsync(request.Token, request.RefreshToken);
+            var refreshingResult = await _mediator.Send(request);
+            var result = new RefreshTokenResponse
+            {
+                Success = refreshingResult.Success,
+                Errors = refreshingResult.Errors,
+            };
+
+            if (!refreshingResult.Success) return Ok(result);
             
-            return Ok(refreshResponse);
+            var tokens = await _mediator.Send(new GenerateTokenRequest
+            {
+                UserId = refreshingResult.UserId,
+                Email = refreshingResult.Email,
+            });
+
+            result.Token = tokens.Token;
+
+            return Ok(result);
         }
     }
 }

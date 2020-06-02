@@ -21,7 +21,7 @@ namespace TestApi.Repositories
 
         public Task<User> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult<User>(_users.FirstOrDefault(x => x.Id == id));
         }
 
         public Task<User> FindOneWithPatternAsync(Func<User, bool> pattern)
@@ -42,7 +42,17 @@ namespace TestApi.Repositories
 
         public Task UpdateAsync(User entity)
         {
-            throw new NotImplementedException();
+            var foundedIndex = _users.IndexOf(entity);
+            if (foundedIndex == -1)
+            {
+                _users.Add(entity);
+            }
+            else
+            {
+                _users[foundedIndex] = entity;
+            }
+
+            return Task.CompletedTask;
         }
 
         public Task SaveAsync()

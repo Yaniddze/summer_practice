@@ -14,12 +14,12 @@ namespace TestApi.UseCases.GenerateToken
     public class GenerateTokenUseCase: IRequestHandler<GenerateTokenRequest, GenerateTokenAnswer>
     {
         private readonly JwtOptions _jwtOptions;
-        private readonly IRepository<RefreshToken> _tokenRepository;
+        private readonly IRepository<User> _userRepository;
 
-        public GenerateTokenUseCase(JwtOptions jwtOptions, IRepository<RefreshToken> tokenRepository)
+        public GenerateTokenUseCase(JwtOptions jwtOptions, IRepository<User> userRepository)
         {
             _jwtOptions = jwtOptions;
-            _tokenRepository = tokenRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<GenerateTokenAnswer> Handle(GenerateTokenRequest request, CancellationToken cancellationToken)
@@ -34,7 +34,7 @@ namespace TestApi.UseCases.GenerateToken
                     new Claim(JwtRegisteredClaimNames.Email, request.Email),
                     new Claim("id", request.UserId.ToString()),
                 }),
-//              LifeTime: 5 Minutes by default + 0.01 minutes
+//            LifeTime: 5 Minutes by default + 0.01 minutes
                 Expires = DateTime.UtcNow.AddMinutes(0.01),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_jwtOptions.SecretInBytes),
                     SecurityAlgorithms.HmacSha256Signature)
@@ -42,21 +42,22 @@ namespace TestApi.UseCases.GenerateToken
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             
-            var refreshToken = new RefreshToken
+            var foundedUser = await _userRepository.GetByIdAsync(request.UserId);
+            if (foundedUser == null)
             {
-                Id = Guid.NewGuid(),
-                JwtId = token.Id,
-                UserId = request.UserId,
-                CreationDate = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddMonths(6),
-            };
+                return new GenerateTokenAnswer();
+            }
 
-            await _tokenRepository.InsertAsync(refreshToken);
+            foundedUser.UserToken.Token = tokenHandler.WriteToken(token);
+            foundedUser.UserToken.JwtId = token.Id;
+            foundedUser.UserToken.CreationDate = DateTime.UtcNow;
+            foundedUser.UserToken.ExpiryDate = DateTime.UtcNow.AddMonths(6);
+
+            await _userRepository.UpdateAsync(foundedUser);
             
             return new GenerateTokenAnswer
             {
-                Token = tokenHandler.WriteToken(token),
-                RefreshedToken = refreshToken.Id.ToString()
+                Token = foundedUser.UserToken.Token,
             }; 
         }
     }
