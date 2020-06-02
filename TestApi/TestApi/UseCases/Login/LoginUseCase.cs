@@ -32,7 +32,9 @@ namespace TestApi.UseCases.Login
 
             return new LoginAnswer
             {
-                Success = true
+                Success = true,
+                UserId = foundedUser.Id,
+                Email = foundedUser.Email,
             };
         }
     }

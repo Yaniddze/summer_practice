@@ -14,8 +14,8 @@ namespace TestApi.Services
     {
         private readonly JwtOptions _jwtOptions;
         private readonly TokenValidationParameters _tokenValidationParameters;
-        private static List<User> users = new List<User>();
-        private static List<RefreshToken> refreshTokens = new List<RefreshToken>();
+        private static readonly List<User> users = new List<User>();
+        private static readonly List<RefreshToken> refreshTokens = new List<RefreshToken>();
 
         public IdentityService(JwtOptions jwtOptions, TokenValidationParameters tokenValidationParameters)
         {
@@ -23,7 +23,7 @@ namespace TestApi.Services
             _tokenValidationParameters = tokenValidationParameters;
         }
 
-        public Task<RegisterResponse> registerAsync(string requestEmail, string requestPassword)
+        public Task<RegistrationResponse> registerAsync(string requestEmail, string requestPassword)
         {
             var tempUser = new User
             {
@@ -35,11 +35,11 @@ namespace TestApi.Services
             
             var generatedToken = GenerateToken(requestEmail, tempUser.id);
 
-            return Task.FromResult(new RegisterResponse
+            return Task.FromResult(new RegistrationResponse
             {
-                isRegistered = true,
-                token = generatedToken.token,
-                refreshToken = generatedToken.refreshedToken
+                Success = true,
+                Token = generatedToken.token,
+                RefreshToken = generatedToken.refreshedToken
             });
         }
 
@@ -51,8 +51,8 @@ namespace TestApi.Services
             {
                 return Task.FromResult(new LoginResponse
                 {
-                    isSuccess = false,
-                    errors = new List<string> { "user doesn't exists" }
+                    Success = false,
+                    Errors = new List<string> { "user doesn't exists" }
                 });
             }
 
@@ -60,9 +60,9 @@ namespace TestApi.Services
             
             return Task.FromResult(new LoginResponse
             {
-                isSuccess = true,
-                token = generatedToken.token,
-                refreshToken = generatedToken.refreshedToken,
+                Success = true,
+                Token = generatedToken.token,
+                RefreshToken = generatedToken.refreshedToken,
             });
         }
 
@@ -159,12 +159,7 @@ namespace TestApi.Services
                 var tokenValidationParameters = _tokenValidationParameters.Clone();
                 tokenValidationParameters.ValidateLifetime = false;
                 var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var validatedToken);
-                if (!isJwtValidSecurityAlgorithm(validatedToken))
-                {
-                    return null;
-                }
-
-                return principal;
+                return !isJwtValidSecurityAlgorithm(validatedToken) ? null : principal;
             }
             catch (Exception e)
             {

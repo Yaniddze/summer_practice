@@ -39,7 +39,7 @@ namespace TestApi.UseCases.Registration
                 };
             }
 
-            await _userRepository.InsertAsync(new User
+            var tempUser = new User
             {
                 Id = Guid.NewGuid(),
                 Email = request.Email,
@@ -47,11 +47,15 @@ namespace TestApi.UseCases.Registration
                 Login = request.Login,
                 Name = "",
                 Password = request.Password,
-            });
+            };
+            
+            await _userRepository.InsertAsync(tempUser);
 
             return new RegistrationAnswer
             {
                 Success = true,
+                Email = request.Email,
+                UserId = tempUser.Id,
             };
         }
     }
