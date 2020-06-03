@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using TestApi.Repositories;
 
 namespace TestApi.DataBase.Repositories
 {
-    public class UsersRepository: IRepository<User>
+    public class UsersRepository : IRepository<User>
     {
         private readonly Context _context;
         private readonly IMapper _mapper;
@@ -26,12 +27,12 @@ namespace TestApi.DataBase.Repositories
             return await _context.users.Select(x => _mapper.Map<UserDB, User>(x)).ToListAsync();
         }
 
-        public async Task<IEnumerable<User>> GetWithPatternAsync(Func<User, bool> pattern)
+        public async Task<IEnumerable<User>> GetWithPatternAsync(Expression<Func<User, bool>> pattern)
         {
+            var filter = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
+
             var founded = await _context.users
-                .Where(
-                    x => pattern(_mapper.Map<UserDB, User>(x))
-                )
+                .Where(filter)
                 .Select(x => _mapper.Map<UserDB, User>(x))
                 .ToListAsync();
             return founded;
@@ -40,13 +41,16 @@ namespace TestApi.DataBase.Repositories
         public async Task<User> GetByIdAsync(Guid id)
         {
             var founded = await _context.users.FirstOrDefaultAsync(x => x.id == id);
-            return founded == null ? null: _mapper.Map<UserDB, User>(founded);
+            return founded == null ? null : _mapper.Map<UserDB, User>(founded);
         }
 
-        public async Task<User> FindOneWithPatternAsync(Func<User, bool> pattern)
+        public async Task<User> FindOneWithPatternAsync(Expression<Func<User, bool>> pattern)
         {
-            var founded = await _context.users.FirstOrDefaultAsync(x => pattern(_mapper.Map<UserDB, User>(x)));
-            return founded == null ? null: _mapper.Map<UserDB, User>(founded);
+            var filter = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
+            
+            var founded = await _context.users
+                .FirstOrDefaultAsync(filter);
+            return founded == null ? null : _mapper.Map<UserDB, User>(founded);
         }
 
         public async Task InsertAsync(User entity)
@@ -73,10 +77,10 @@ namespace TestApi.DataBase.Repositories
             {
                 founded.creation_date = entity.UserToken.CreationDate;
                 founded.expiry_date = entity.UserToken.ExpiryDate;
-                founded.JwtId = entity.UserToken.JwtId;
+                founded.jwtid = entity.UserToken.JwtId;
                 founded.token = entity.UserToken.Token;
                 founded.email = entity.Email;
-                founded.isEmailConfirmed = entity.IsEmailConfirmed;
+                founded.isemailconfirmed = entity.IsEmailConfirmed;
                 founded.login = entity.Login;
                 founded.password = entity.Password;
 

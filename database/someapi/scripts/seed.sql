@@ -2,6 +2,7 @@ CREATE TABLE users
 (
     id uuid PRIMARY KEY,
     email varchar(20),
+    name varchar(20),
     isEmailConfirmed boolean DEFAULT false,
     login varchar(20),
     password varchar(40),

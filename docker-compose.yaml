@@ -44,6 +44,26 @@ services:
     links:
       - someapi
 
+  postgres-image:
+    image: postgres:latest
+    ports:
+      - "5432"
+    restart: always
+    volumes:
+      - ./database/someapi/data:/var/lib/postgresql/data
+      - ./database/someapi/scripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "money"
+    
+
   someapi:
     build: ./TestApi/TestApi
     restart: always
+    depends_on:
+      - "postgres-image"
+    ports:
+      # - "8088:80"
+    environment:
+      DB_CONNECTION_STRING: "host=postgres-image;port=5432;database=money;username=postgres;password=postgres"
