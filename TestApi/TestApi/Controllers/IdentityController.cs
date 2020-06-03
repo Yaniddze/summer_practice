@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TestApi.Controllers.Contract.Responses;
+using TestApi.Controllers.Responses;
 using TestApi.UseCases.GenerateToken;
 using TestApi.UseCases.Login;
 using TestApi.UseCases.RefreshToken;

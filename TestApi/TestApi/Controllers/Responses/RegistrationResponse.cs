@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TestApi.Controllers.Contract.Responses
+namespace TestApi.Controllers.Responses
 {
     public class RegistrationResponse
     {

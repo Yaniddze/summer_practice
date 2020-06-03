@@ -63,7 +63,7 @@ services:
     restart: always
     depends_on:
       - "postgres-image"
-    ports:
-      # - "8088:80"
+    # ports:
+    #   - "8088:80"
     environment:
       DB_CONNECTION_STRING: "host=postgres-image;port=5432;database=money;username=postgres;password=postgres"
