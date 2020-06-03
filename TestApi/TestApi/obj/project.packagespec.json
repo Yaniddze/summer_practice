@@ -26,6 +26,14 @@
   "frameworks": {
     "netcoreapp3.1": {
       "dependencies": {
+        "AutoMapper": {
+          "target": "Package",
+          "version": "[9.0.0, )"
+        },
+        "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+          "target": "Package",
+          "version": "[7.0.0, )"
+        },
         "MediatR": {
           "target": "Package",
           "version": "[8.0.1, )"
@@ -39,6 +47,10 @@
           "version": "[3.1.4, )"
         },
         "Microsoft.EntityFrameworkCore": {
+          "target": "Package",
+          "version": "[5.0.0-preview.4.20220.10, )"
+        },
+        "Microsoft.EntityFrameworkCore.Analyzers": {
           "target": "Package",
           "version": "[5.0.0-preview.4.20220.10, )"
         },

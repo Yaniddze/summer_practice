@@ -74,3 +74,5 @@
 /home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/System.ComponentModel.Annotations.dll
 /home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/System.Diagnostics.DiagnosticSource.dll
 /home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/AutoMapper.dll
+/home/yan/Documents/summer_practice/TestApi/TestApi/bin/Debug/netcoreapp3.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
