@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/yan/Documents/summer_practice/TestApi/IdentityService/IdentityService.csproj": {}
+    "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj": {}
   },
   "projects": {
-    "/home/yan/Documents/summer_practice/TestApi/IdentityService/IdentityService.csproj": {
+    "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/yan/Documents/summer_practice/TestApi/IdentityService/IdentityService.csproj",
+        "projectUniqueName": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj",
         "projectName": "IdentityService",
-        "projectPath": "/home/yan/Documents/summer_practice/TestApi/IdentityService/IdentityService.csproj",
+        "projectPath": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj",
         "packagesPath": "/home/yan/.nuget/packages/",
-        "outputPath": "/home/yan/Documents/summer_practice/TestApi/IdentityService/obj/",
+        "outputPath": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/yan/.config/NuGet/NuGet.Config"
