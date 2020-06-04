@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AspGateway.UseCases.Login;
+using AspGateway.UseCases.RefreshToken;
 using AspGateway.UseCases.Registration;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace AspGateway.Controllers
         }
         
         [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh([FromBody] LoginRequest request)
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
         {
             var response = await _mediator.Send(request);
             
