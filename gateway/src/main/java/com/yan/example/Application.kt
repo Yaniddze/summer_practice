@@ -37,5 +37,5 @@ fun main(args: Array<String>) {
 
 @ConfigurationProperties
 class UriConfiguration {
-    var sampleServer = "http://someapi:80"
+    var sampleServer = "http://identity-service:80"
 }

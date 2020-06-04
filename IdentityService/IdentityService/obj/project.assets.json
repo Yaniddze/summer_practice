@@ -4609,11 +4609,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/yan/Documents/summer_practice/TestApi/TestApi/TestApi.csproj",
-      "projectName": "TestApi",
-      "projectPath": "/home/yan/Documents/summer_practice/TestApi/TestApi/TestApi.csproj",
+      "projectUniqueName": "/home/yan/Documents/summer_practice/TestApi/IdentityService/IdentityService.csproj",
+      "projectName": "IdentityService",
+      "projectPath": "/home/yan/Documents/summer_practice/TestApi/IdentityService/IdentityService.csproj",
       "packagesPath": "/home/yan/.nuget/packages/",
-      "outputPath": "/home/yan/Documents/summer_practice/TestApi/TestApi/obj/",
+      "outputPath": "/home/yan/Documents/summer_practice/TestApi/IdentityService/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/yan/.config/NuGet/NuGet.Config"

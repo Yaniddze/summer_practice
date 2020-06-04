@@ -2,9 +2,9 @@
 //using System.Collections.Generic;
 //using System.Linq;
 //using System.Threading.Tasks;
-//using TestApi.Entities;
+//using IdentityService.Entities;
 //
-//namespace TestApi.Repositories
+//namespace IdentityService.Repositories
 //{
 //    public class UserRepository: IRepository<User>
 //    {

@@ -40,14 +40,12 @@ services:
     build: ./gateway
     restart: always
     depends_on:
-      - someapi 
+      - identity-service 
     links:
-      - someapi
+      - identity-service
 
   postgres-image:
     image: postgres:latest
-    ports:
-      - "5432"
     restart: always
     volumes:
       - ./database/someapi/data:/var/lib/postgresql/data
@@ -58,8 +56,8 @@ services:
       POSTGRES_DB: "money"
     
 
-  someapi:
-    build: ./TestApi/TestApi
+  identity-service:
+    build: ./IdentityService/IdentityService
     restart: always
     depends_on:
       - "postgres-image"
