@@ -37,14 +37,16 @@ services:
       - gateway
 
   gateway:
-    build: ./gateway
+    build: ./AspGateway/AspGateway
     restart: always
+    # ports:
+    #   - "8088:80"
     depends_on:
       - identity-service 
     links:
       - identity-service
 
-  postgres-image:
+  postgres-identity:
     image: postgres:latest
     restart: always
     volumes:
@@ -55,13 +57,12 @@ services:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "money"
     
-
   identity-service:
     build: ./IdentityService/IdentityService
     restart: always
     depends_on:
-      - "postgres-image"
+      - "postgres-identity"
     # ports:
     #   - "8088:80"
     environment:
-      DB_CONNECTION_STRING: "host=postgres-image;port=5432;database=money;username=postgres;password=postgres"
+      DB_CONNECTION_STRING: "host=postgres-identity;port=5432;database=money;username=postgres;password=postgres"
