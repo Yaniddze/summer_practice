@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace TestApi.Options
+namespace AspGateway.Options
 {
     public class JwtOptions
     {

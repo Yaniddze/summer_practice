@@ -1,10 +1,10 @@
+using AspGateway.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using TestApi.Options;
 
-namespace TestApi.Installers
+namespace AspGateway.Installers
 {
     public class JwtInstaller : IInstaller
     {
