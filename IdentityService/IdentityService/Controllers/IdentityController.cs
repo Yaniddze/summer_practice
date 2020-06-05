@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using TestApi.UseCases.GenerateToken;
 using TestApi.UseCases.Login;
 using TestApi.UseCases.RefreshToken;
 using TestApi.UseCases.Registration;
+using TestApi.UseCases.SendMail;
 
 namespace TestApi.Controllers
 {
@@ -29,6 +31,13 @@ namespace TestApi.Controllers
             };
 
             if (!registrationResult.Success) return Ok(result);
+
+            var emailResult = await _mediator.Send(new EmailRequest
+            {
+                Email = registrationResult.Email,
+                Message = "Hello, User!",
+                Subject = "Подтверждение регистрации"
+            });
             
             var tokens = await _mediator.Send(new GenerateTokenRequest
             {
@@ -36,7 +45,7 @@ namespace TestApi.Controllers
                 Email = registrationResult.Email,
             });
             result.Token = tokens.Token;
-
+            result.Errors = new List<string>{emailResult.Success ? "Success" : "Failed"};
             return Ok(result);
         }
         
