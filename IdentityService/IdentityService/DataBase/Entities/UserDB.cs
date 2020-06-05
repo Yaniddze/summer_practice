@@ -10,6 +10,7 @@ namespace TestApi.DataBase.Entities
         public string name { get; set; }
         public string email { get; set; }
         public bool isemailconfirmed { get; set; }
+        public Guid activation_url { get; set; }
         public string password { get; set; }
         public string token { get; set; }
         public DateTime expiry_date { get; set; }

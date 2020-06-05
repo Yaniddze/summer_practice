@@ -60,6 +60,7 @@ namespace TestApi.UseCases.Registration
                 Login = request.Login,
                 Name = "",
                 Password = request.Password,
+                ActivationUrl = Guid.NewGuid(),
             };
             
             await _userRepository.InsertAsync(tempUser);
@@ -69,6 +70,7 @@ namespace TestApi.UseCases.Registration
                 Success = true,
                 Email = request.Email,
                 UserId = tempUser.Id,
+                ActivationUrl = tempUser.ActivationUrl,
             };
         }
     }

@@ -83,6 +83,7 @@ namespace TestApi.DataBase.Repositories
                 founded.isemailconfirmed = entity.IsEmailConfirmed;
                 founded.login = entity.Login;
                 founded.password = entity.Password;
+                founded.activation_url = entity.ActivationUrl;
 
                 _context.Entry(founded).State = EntityState.Modified;
                 await _context.SaveChangesAsync();

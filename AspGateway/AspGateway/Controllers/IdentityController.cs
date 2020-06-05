@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AspGateway.UseCases.ActivateAccount;
 using AspGateway.UseCases.Login;
 using AspGateway.UseCases.RefreshToken;
 using AspGateway.UseCases.Registration;
@@ -35,6 +36,14 @@ namespace AspGateway.Controllers
         
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
+        {
+            var response = await _mediator.Send(request);
+            
+            return Ok(response);
+        }
+        
+        [HttpPost("activate")]
+        public async Task<IActionResult> Activate([FromBody] ActivateRequest request)
         {
             var response = await _mediator.Send(request);
             

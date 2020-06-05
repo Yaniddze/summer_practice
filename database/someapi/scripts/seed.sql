@@ -9,7 +9,8 @@ CREATE TABLE users
     token text,
     expiry_date TIMESTAMP,
     creation_date TIMESTAMP,
-    JwtId text
+    JwtId text,
+    activation_url uuid
 );
 
 ALTER TABLE users OWNER TO postgres;

@@ -9,6 +9,7 @@ namespace TestApi.Entities
         public string Email { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public string Password { get; set; }
+        public Guid ActivationUrl { get; set; }
         public UserToken UserToken { get; private set; } = new UserToken();
     }
 

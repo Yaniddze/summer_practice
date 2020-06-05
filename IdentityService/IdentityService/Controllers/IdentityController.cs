@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TestApi.Controllers.Responses;
+using TestApi.UseCases.ActivateAccount;
 using TestApi.UseCases.GenerateToken;
 using TestApi.UseCases.Login;
 using TestApi.UseCases.RefreshToken;
@@ -10,7 +11,8 @@ using TestApi.UseCases.SendMail;
 
 namespace TestApi.Controllers
 {
-    public class IdentityController: Controller
+    [Route("api/identity")]
+    public class IdentityController : Controller
     {
         private readonly IMediator _mediator;
 
@@ -19,7 +21,7 @@ namespace TestApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("api/identity/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequest request)
         {
             var registrationResult = await _mediator.Send(request);
@@ -34,10 +36,11 @@ namespace TestApi.Controllers
             await _mediator.Send(new EmailRequest
             {
                 Email = registrationResult.Email,
-                Message = "Hello, User!",
-                Subject = "Подтверждение регистрации"
+                Message =
+                    $"Привет! Ссылка на активацию аккаунта: https://yaniddze.com/activate_account/{registrationResult.ActivationUrl}",
+                Subject = "Подтверждение регистрации",
             });
-            
+
             var tokens = await _mediator.Send(new GenerateTokenRequest
             {
                 UserId = registrationResult.UserId,
@@ -46,8 +49,8 @@ namespace TestApi.Controllers
             result.Token = tokens.Token;
             return Ok(result);
         }
-        
-        [HttpPost("api/identity/login")]
+
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var loginResult = await _mediator.Send(request);
@@ -58,7 +61,7 @@ namespace TestApi.Controllers
             };
 
             if (!loginResult.Success) return Ok(result);
-            
+
             var tokens = await _mediator.Send(new GenerateTokenRequest
             {
                 UserId = loginResult.UserId,
@@ -69,7 +72,7 @@ namespace TestApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost("api/identity/refresh")]
+        [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
         {
             var refreshingResult = await _mediator.Send(request);
@@ -80,7 +83,7 @@ namespace TestApi.Controllers
             };
 
             if (!refreshingResult.Success) return Ok(result);
-            
+
             var tokens = await _mediator.Send(new GenerateTokenRequest
             {
                 UserId = refreshingResult.UserId,
@@ -88,6 +91,14 @@ namespace TestApi.Controllers
             });
 
             result.Token = tokens.Token;
+
+            return Ok(result);
+        }
+
+        [HttpPost("activate")]
+        public async Task<IActionResult> ActivateAccount([FromBody] ActivateRequest request)
+        {
+            var result = await _mediator.Send(request);
 
             return Ok(result);
         }

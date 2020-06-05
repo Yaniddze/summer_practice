@@ -7,7 +7,7 @@ using TestApi.Entities;
 
 namespace TestApi.Installers
 {
-    public class AutoMapperInstaller: IInstaller
+    public class AutoMapperInstaller : IInstaller
     {
         public void installServices(IServiceCollection services, IConfiguration configuration)
         {
@@ -16,16 +16,21 @@ namespace TestApi.Installers
                 options.AddExpressionMapping();
                 options.CreateMap<UserDB, User>()
                     .ForMember(
-                        destination => destination.UserToken, 
+                        destination => destination.UserToken,
                         map => map.MapFrom(
-                        source => new UserToken
-                        {
-                            Token = source.token,
-                            CreationDate = source.creation_date,
-                            ExpiryDate = source.expiry_date,
-                            JwtId = source.jwtid,
-                        }
-                    ));
+                            source => new UserToken
+                            {
+                                Token = source.token,
+                                CreationDate = source.creation_date,
+                                ExpiryDate = source.expiry_date,
+                                JwtId = source.jwtid,
+                            }
+                        ))
+                    .ForMember(
+                        destination => destination.ActivationUrl,
+                        map => map.MapFrom(
+                            source => source.activation_url
+                        ));
                 options.CreateMap<User, UserDB>()
                     .ForMember(
                         x => x.creation_date,
@@ -42,8 +47,12 @@ namespace TestApi.Installers
                     .ForMember(
                         x => x.jwtid,
                         map => map.MapFrom(source => source.UserToken.JwtId)
+                    )
+                    .ForMember(
+                        x => x.activation_url,
+                        map => map.MapFrom(source => source.ActivationUrl)
                     );
-            },typeof(Startup));
+            }, typeof(Startup));
         }
     }
 }
