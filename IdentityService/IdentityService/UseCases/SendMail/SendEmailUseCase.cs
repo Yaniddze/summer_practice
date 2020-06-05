@@ -19,7 +19,7 @@ namespace TestApi.UseCases.SendMail
         {
             var mail = new MailMessage
             {
-                From = new MailAddress("YaniddzeMail@gmail.com"),
+                From = new MailAddress("FaceCrack1337@gmail.com"),
                 Subject = request.Subject,
                 Body = request.Message,
             };

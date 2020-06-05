@@ -18,10 +18,10 @@ namespace TestApi.Installers
 
             var smtpClient = new SmtpClient("smtp.gmail.com", 587)
             {
-                Credentials = new NetworkCredential("YaniddzeMail@gmail.com", "qhnzfvbsmefzyvds"),
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("FaceCrack1337@gmail.com", "qhnzfvbsmefzyvds"),
             };
             services.AddSingleton(smtpClient);
         }
