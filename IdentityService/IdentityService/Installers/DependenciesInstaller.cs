@@ -16,7 +16,7 @@ namespace TestApi.Installers
             services.AddSingleton(new Context());
             services.AddScoped<IRepository<User>, UsersRepository>();
 
-            var smtpClient = new SmtpClient("smtp.gmail.ru", 587)
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
             {
                 Credentials = new NetworkCredential("YaniddzeMail@gmail.com", "qhnzfvbsmefzyvds"),
                 EnableSsl = true,
