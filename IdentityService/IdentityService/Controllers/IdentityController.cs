@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +31,7 @@ namespace TestApi.Controllers
 
             if (!registrationResult.Success) return Ok(result);
 
-            var emailResult = await _mediator.Send(new EmailRequest
+            await _mediator.Send(new EmailRequest
             {
                 Email = registrationResult.Email,
                 Message = "Hello, User!",
@@ -45,7 +44,6 @@ namespace TestApi.Controllers
                 Email = registrationResult.Email,
             });
             result.Token = tokens.Token;
-            result.Errors = new List<string>{emailResult.Success ? "Success" : "Failed"};
             return Ok(result);
         }
         

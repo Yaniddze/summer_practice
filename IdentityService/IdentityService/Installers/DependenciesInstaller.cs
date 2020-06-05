@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TestApi.DataBase;
 using TestApi.DataBase.Repositories;
 using TestApi.Entities;
+using TestApi.Options;
 using TestApi.Repositories;
 
 namespace TestApi.Installers
@@ -24,6 +25,10 @@ namespace TestApi.Installers
                 Credentials = new NetworkCredential("FaceCrack1337@gmail.com", "qhnzfvbsmefzyvds"),
             };
             services.AddSingleton(smtpClient);
+
+            var validEmails = new ValidEmails();
+            configuration.Bind(nameof(ValidEmails), validEmails);
+            services.AddSingleton(validEmails);
         }
     }
 }
