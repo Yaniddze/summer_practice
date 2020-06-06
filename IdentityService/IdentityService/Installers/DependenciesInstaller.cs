@@ -9,6 +9,7 @@ using TestApi.Entities;
 using TestApi.Options;
 using TestApi.Repositories;
 using TestApi.UseCases.ActivateAccount;
+using TestApi.UseCases.Login;
 using TestApi.UseCases.Registration;
 
 namespace TestApi.Installers
@@ -37,6 +38,7 @@ namespace TestApi.Installers
 
             services.AddScoped<IValidator<ActivateRequest>, ActivateRequestValidator>();
             services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
+            services.AddScoped<IValidator<LoginRequest>, LoginRequestValidation>();
         }
     }
 }
