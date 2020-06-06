@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using TestApi.Entities;
@@ -16,16 +17,28 @@ namespace TestApi.UseCases.RefreshToken
     {
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly IRepository<User> _userRepository;
+        private readonly IValidator<RefreshTokenRequest> _requestValidator;
 
-
-        public RefreshTokenUseCase(TokenValidationParameters tokenValidationParameters, IRepository<User> userRepository)
+        public RefreshTokenUseCase(TokenValidationParameters tokenValidationParameters, IRepository<User> userRepository, IValidator<RefreshTokenRequest> requestValidator)
         {
             _tokenValidationParameters = tokenValidationParameters;
             _userRepository = userRepository;
+            _requestValidator = requestValidator;
         }
 
         public async Task<RefreshTokenAnswer> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
         {
+            var validationResult = await _requestValidator.ValidateAsync(request, cancellationToken);
+            
+            if (!validationResult.IsValid)
+            {
+                return new RefreshTokenAnswer
+                {
+                    Success = false,
+                    Errors = validationResult.Errors.Select(x => $"{x.PropertyName}: {x.ErrorMessage}").ToList()
+                };
+            }
+            
             var validatedToken = GetPrincipalFromToken(request.Token);
 
             if (validatedToken == null)

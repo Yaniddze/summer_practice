@@ -10,6 +10,7 @@ using TestApi.Options;
 using TestApi.Repositories;
 using TestApi.UseCases.ActivateAccount;
 using TestApi.UseCases.Login;
+using TestApi.UseCases.RefreshToken;
 using TestApi.UseCases.Registration;
 
 namespace TestApi.Installers
@@ -31,7 +32,7 @@ namespace TestApi.Installers
             };
             services.AddSingleton(smtpClient);
 
-            // Valid emails like @gmail.com, 
+            // Valid emails, that mapped from appsettings.json
             var validEmails = new ValidEmails();
             configuration.Bind(nameof(ValidEmails), validEmails);
             services.AddSingleton(validEmails);
@@ -39,6 +40,7 @@ namespace TestApi.Installers
             services.AddScoped<IValidator<ActivateRequest>, ActivateRequestValidator>();
             services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
             services.AddScoped<IValidator<LoginRequest>, LoginRequestValidation>();
+            services.AddScoped<IValidator<RefreshTokenRequest>, RefreshRequestValidator>();
         }
     }
 }
