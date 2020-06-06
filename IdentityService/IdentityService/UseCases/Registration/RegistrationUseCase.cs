@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 using TestApi.Entities;
 using TestApi.Options;
@@ -13,22 +14,24 @@ namespace TestApi.UseCases.Registration
     public class RegistrationUseCase: IRequestHandler<RegistrationRequest, RegistrationAnswer>
     {
         private readonly IRepository<User> _userRepository;
-        private readonly ValidEmails _emails;
+        private readonly IValidator<RegistrationRequest> _requestValidator;
         
-        public RegistrationUseCase(IRepository<User> userRepository, ValidEmails emails)
+        public RegistrationUseCase(IRepository<User> userRepository, IValidator<RegistrationRequest> requestValidator)
         {
             _userRepository = userRepository;
-            _emails = emails;
+            _requestValidator = requestValidator;
         }
 
         public async Task<RegistrationAnswer> Handle(RegistrationRequest request, CancellationToken cancellationToken)
         {
-            if (_emails.Emails.FirstOrDefault(x => request.Email.EndsWith(x)) == null)
+            var validationResult = await _requestValidator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
             {
                 return new RegistrationAnswer
                 {
                     Success = false,
-                    Errors = new List<string>{ $"Email is not valid. Valid emails: {string.Join(',', _emails.Emails)}" }
+                    Errors = validationResult.Errors.Select(x => $"{x.PropertyName}: {x.ErrorMessage}").ToList(),
                 };
             }
 

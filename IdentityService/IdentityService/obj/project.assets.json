@@ -40,6 +40,44 @@
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "FluentValidation/9.0.0-preview5": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
+        }
+      },
+      "FluentValidation.AspNetCore/9.0.0-preview5": {
+        "type": "package",
+        "dependencies": {
+          "FluentValidation": "9.0.0-preview5",
+          "FluentValidation.DependencyInjectionExtensions": "9.0.0-preview5"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/FluentValidation.AspNetCore.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/FluentValidation.AspNetCore.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "FluentValidation.DependencyInjectionExtensions/9.0.0-preview5": {
+        "type": "package",
+        "dependencies": {
+          "FluentValidation": "9.0.0-preview5",
+          "Microsoft.Extensions.Dependencyinjection.Abstractions": "2.1.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/FluentValidation.DependencyInjectionExtensions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/FluentValidation.DependencyInjectionExtensions.dll": {}
+        }
+      },
       "MediatR/8.0.1": {
         "type": "package",
         "compile": {
@@ -1230,6 +1268,49 @@
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll",
         "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.pdb"
+      ]
+    },
+    "FluentValidation/9.0.0-preview5": {
+      "sha512": "fsXX5259EE4/j+ARQU7hXRByRAO6tERPEcp07tBVoN9jZH1OexqwrfpA+S59y/u8uc5BDajnsD6vIJ/t/JxrRQ==",
+      "type": "package",
+      "path": "fluentvalidation/9.0.0-preview5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fluentvalidation.9.0.0-preview5.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net461/FluentValidation.dll",
+        "lib/net461/FluentValidation.xml",
+        "lib/netstandard2.0/FluentValidation.dll",
+        "lib/netstandard2.0/FluentValidation.xml"
+      ]
+    },
+    "FluentValidation.AspNetCore/9.0.0-preview5": {
+      "sha512": "GBjntNfMqt4Ei2+htJ1keZyxTsX1juio/Fak4ydx2HwbMRC5//LZFDjqjJvM7krzko0prjnLMuJHX5bPrBAZJw==",
+      "type": "package",
+      "path": "fluentvalidation.aspnetcore/9.0.0-preview5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fluentvalidation.aspnetcore.9.0.0-preview5.nupkg.sha512",
+        "fluentvalidation.aspnetcore.nuspec",
+        "lib/netcoreapp2.1/FluentValidation.AspNetCore.dll",
+        "lib/netcoreapp2.1/FluentValidation.AspNetCore.xml",
+        "lib/netcoreapp3.1/FluentValidation.AspNetCore.dll",
+        "lib/netcoreapp3.1/FluentValidation.AspNetCore.xml"
+      ]
+    },
+    "FluentValidation.DependencyInjectionExtensions/9.0.0-preview5": {
+      "sha512": "WlCYo98NkwdQbAvCeoDAksjQay4Nce5RpM9BleG8EtdzIPnnYzCiAVN6HX6oLF46LXysE1s8Z/QcilRuRQQJzQ==",
+      "type": "package",
+      "path": "fluentvalidation.dependencyinjectionextensions/9.0.0-preview5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fluentvalidation.dependencyinjectionextensions.9.0.0-preview5.nupkg.sha512",
+        "fluentvalidation.dependencyinjectionextensions.nuspec",
+        "lib/netstandard2.0/FluentValidation.DependencyInjectionExtensions.dll",
+        "lib/netstandard2.0/FluentValidation.DependencyInjectionExtensions.xml"
       ]
     },
     "MediatR/8.0.1": {
@@ -4594,6 +4675,8 @@
       "AutoMapper >= 9.0.0",
       "AutoMapper.Extensions.ExpressionMapping >= 3.1.2-preview01",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 7.0.0",
+      "FluentValidation.AspNetCore >= 9.0.0-preview5",
+      "FluentValidation.DependencyInjectionExtensions >= 9.0.0-preview5",
       "MediatR >= 8.0.1",
       "MediatR.Extensions.Microsoft.DependencyInjection >= 8.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 3.1.4",
@@ -4649,6 +4732,14 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": {
             "target": "Package",
             "version": "[7.0.0, )"
+          },
+          "FluentValidation.AspNetCore": {
+            "target": "Package",
+            "version": "[9.0.0-preview5, )"
+          },
+          "FluentValidation.DependencyInjectionExtensions": {
+            "target": "Package",
+            "version": "[9.0.0-preview5, )"
           },
           "MediatR": {
             "target": "Package",

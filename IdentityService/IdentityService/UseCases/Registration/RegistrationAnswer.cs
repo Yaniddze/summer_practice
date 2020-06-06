@@ -5,6 +5,10 @@ namespace TestApi.UseCases.Registration
 {
     public class RegistrationAnswer
     {
+        public RegistrationAnswer()
+        {
+            Errors = new List<string>();
+        }
         public bool Success { get; set; }
         public List<string> Errors { get; set; }
         public string Email { get; set; }

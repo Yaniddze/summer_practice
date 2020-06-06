@@ -38,6 +38,14 @@
           "target": "Package",
           "version": "[7.0.0, )"
         },
+        "FluentValidation.AspNetCore": {
+          "target": "Package",
+          "version": "[9.0.0-preview5, )"
+        },
+        "FluentValidation.DependencyInjectionExtensions": {
+          "target": "Package",
+          "version": "[9.0.0-preview5, )"
+        },
         "MediatR": {
           "target": "Package",
           "version": "[8.0.1, )"
