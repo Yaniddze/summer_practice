@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using TestApi.DataBase.Context;
 using TestApi.DataBase.Entities;
 using TestApi.Entities;
 using TestApi.Repositories;
@@ -13,86 +14,110 @@ namespace TestApi.DataBase.Repositories
 {
     public class UsersRepository : IRepository<User>
     {
-        private readonly Context _context;
+        private readonly IContextProvider _contextProvider;
         private readonly IMapper _mapper;
 
-        public UsersRepository(Context context, IMapper mapper)
+        public UsersRepository(IContextProvider contextProvider, IMapper mapper)
         {
-            _context = context;
+            _contextProvider = contextProvider;
             _mapper = mapper;
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _context.users.Select(x => _mapper.Map<UserDB, User>(x)).ToListAsync();
+            using (var context = _contextProvider.GetContext())
+            {
+                return await context.users.Select(x => _mapper.Map<UserDB, User>(x)).ToListAsync();
+            }
         }
 
         public async Task<IEnumerable<User>> GetWithPatternAsync(Expression<Func<User, bool>> pattern)
         {
-            var filter = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
+            using (var context = _contextProvider.GetContext())
+            {
+                var filter = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
 
-            var founded = await _context.users
-                .Where(filter)
-                .Select(x => _mapper.Map<UserDB, User>(x))
-                .ToListAsync();
-            return founded;
+                var founded = await context.users
+                    .Where(filter)
+                    .Select(x => _mapper.Map<UserDB, User>(x))
+                    .ToListAsync();
+                return founded;
+            }
         }
 
         public async Task<User> GetByIdAsync(Guid id)
         {
-            var founded = await _context.users.FirstOrDefaultAsync(x => x.id == id);
-            return founded == null ? null : _mapper.Map<UserDB, User>(founded);
+            using (var context = _contextProvider.GetContext())
+            {
+                var founded = await context.users.FirstOrDefaultAsync(x => x.id == id);
+                return founded == null ? null : _mapper.Map<UserDB, User>(founded);
+            }
         }
 
         public async Task<User> FindOneWithPatternAsync(Expression<Func<User, bool>> pattern)
         {
-            var filter = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
+            using (var context = _contextProvider.GetContext())
+            {
+                var filter = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
             
-            var founded = await _context.users
-                .FirstOrDefaultAsync(filter);
-            return founded == null ? null : _mapper.Map<UserDB, User>(founded);
+                var founded = await context.users
+                    .FirstOrDefaultAsync(filter);
+                return founded == null ? null : _mapper.Map<UserDB, User>(founded);
+            }
         }
 
         public async Task InsertAsync(User entity)
         {
-            var toInsert = _mapper.Map<User, UserDB>(entity);
-            _context.users.Add(toInsert);
-            await _context.SaveChangesAsync();
+            using (var context = _contextProvider.GetContext())
+            {
+                var toInsert = _mapper.Map<User, UserDB>(entity);
+                context.users.Add(toInsert);
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var toDelete = await _context.users.FirstOrDefaultAsync(x => x.id == id);
-            if (toDelete != null)
+            using (var context = _contextProvider.GetContext())
             {
-                _context.users.Remove(toDelete);
-                await _context.SaveChangesAsync();
+                var toDelete = await context.users.FirstOrDefaultAsync(x => x.id == id);
+                if (toDelete != null)
+                {
+                    context.users.Remove(toDelete);
+                    await context.SaveChangesAsync();
+                }
             }
         }
 
         public async Task UpdateAsync(User entity)
         {
-            var founded = await _context.users.FirstOrDefaultAsync(x => x.id == entity.Id);
-            if (founded != null)
+            using (var context = _contextProvider.GetContext())
             {
-                founded.creation_date = entity.UserToken.CreationDate;
-                founded.expiry_date = entity.UserToken.ExpiryDate;
-                founded.jwtid = entity.UserToken.JwtId;
-                founded.token = entity.UserToken.Token;
-                founded.email = entity.Email;
-                founded.isemailconfirmed = entity.IsEmailConfirmed;
-                founded.login = entity.Login;
-                founded.password = entity.Password;
-                founded.activation_url = entity.ActivationUrl;
+                var founded = await context.users.FirstOrDefaultAsync(x => x.id == entity.Id);
+                if (founded != null)
+                {
+                    founded.creation_date = entity.UserToken.CreationDate;
+                    founded.expiry_date = entity.UserToken.ExpiryDate;
+                    founded.jwtid = entity.UserToken.JwtId;
+                    founded.token = entity.UserToken.Token;
+                    founded.email = entity.Email;
+                    founded.isemailconfirmed = entity.IsEmailConfirmed;
+                    founded.login = entity.Login;
+                    founded.password = entity.Password;
+                    founded.activation_url = entity.ActivationUrl;
 
-                _context.Entry(founded).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                    context.Entry(founded).State = EntityState.Modified;
+                    await context.SaveChangesAsync();
+                }
             }
         }
 
         public async Task SaveAsync()
         {
-            await _context.SaveChangesAsync();
+            using (var context = _contextProvider.GetContext())
+            {
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

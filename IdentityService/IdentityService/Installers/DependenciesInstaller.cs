@@ -4,6 +4,7 @@ using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TestApi.DataBase;
+using TestApi.DataBase.Context;
 using TestApi.DataBase.Repositories;
 using TestApi.Entities;
 using TestApi.Options;
@@ -19,7 +20,8 @@ namespace TestApi.Installers
     {
         public void installServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton(new Context());
+//            services.AddSingleton(new EntityContext());
+            services.AddScoped<IContextProvider, ContextProvider>();
             services.AddScoped<IRepository<User>, UsersRepository>();
 
             // SmtpClient for sending emails

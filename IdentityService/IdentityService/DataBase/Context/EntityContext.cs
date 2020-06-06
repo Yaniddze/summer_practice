@@ -2,9 +2,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using TestApi.DataBase.Entities;
 
-namespace TestApi.DataBase
+namespace TestApi.DataBase.Context
 {
-    public class Context: DbContext
+    public class EntityContext: DbContext
     {
         public DbSet<UserDB> users { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
