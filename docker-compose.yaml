@@ -43,8 +43,7 @@ services:
     #   - "8088:80"
     depends_on:
       - identity-service 
-    links:
-      - identity-service
+      - streaming-service
 
   postgres-identity:
     image: postgres:latest
@@ -66,3 +65,7 @@ services:
     #   - "8088:80"
     environment:
       DB_CONNECTION_STRING: "host=postgres-identity;port=5432;database=money;username=postgres;password=postgres"
+
+  streaming-service:
+    build: ./StreamingApi/StreamingApi
+    restart: always

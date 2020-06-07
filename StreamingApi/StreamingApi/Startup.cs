@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using StreamingApi.Installers;
 using StreamingApi.Options;
 
@@ -47,7 +40,6 @@ namespace StreamingApi
             {
                 option.SwaggerEndpoint(swaggerOptions.UiEndpoint, swaggerOptions.Description);
             });
-
             
             app.UseRouting();
             

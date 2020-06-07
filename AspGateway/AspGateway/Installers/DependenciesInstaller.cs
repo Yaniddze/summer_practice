@@ -12,7 +12,8 @@ namespace AspGateway.Installers
             services.AddSingleton(new HttpClient());
             services.AddSingleton(new Urls
             {
-                Identity = "http://identity-service:80"
+                Identity = "http://identity-service:80",
+                Streaming = "http://streaming-service:80",
             });
         }
     }
