@@ -33,8 +33,6 @@ services:
       - ./nginx/public_html:/app/build
     depends_on:
       - gateway
-    links:
-      - gateway
 
   gateway:
     build: ./AspGateway/AspGateway
@@ -45,6 +43,7 @@ services:
       - identity-service 
       - streaming-service
 
+  # Database of identity service
   postgres-identity:
     image: postgres:latest
     restart: always
@@ -52,20 +51,39 @@ services:
       - ./database/someapi/data:/var/lib/postgresql/data
       - ./database/someapi/scripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "money"
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=identity
     
   identity-service:
     build: ./IdentityService/IdentityService
     restart: always
     depends_on:
-      - "postgres-identity"
+      - postgres-identity
     # ports:
     #   - "8088:80"
     environment:
-      DB_CONNECTION_STRING: "host=postgres-identity;port=5432;database=money;username=postgres;password=postgres"
+      - DB_CONNECTION_STRING=host=postgres-identity;port=5432;database=identity;username=postgres;password=postgres
 
   streaming-service:
     build: ./StreamingApi/StreamingApi
     restart: always
+    # ports:
+    #   - "8089:80"
+    depends_on:
+      - mongo-streaming
+    environment:
+      - DB_CONNECTION_STRING=mongodb://root:root@mongo-streaming:27017
+      - DB_NAME=songs
+
+  # Database for streaming service
+  mongo-streaming:
+    image: mongo:latest
+    restart: always
+    volumes:
+      - ./database/streaming/data:/data/db
+      - ./database/streaming/config:/data/configdb
+    environment:
+      - MONGO_INITDB_DATABASE=songs
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root

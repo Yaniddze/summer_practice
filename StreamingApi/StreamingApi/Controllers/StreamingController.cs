@@ -1,18 +1,49 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using StreamingApi.UseCases.AddSong;
+using StreamingApi.UseCases.GetSong;
 
 namespace StreamingApi.Controllers
 {
     [Route("api/streaming")]
     public class StreamingController: Controller
     {
-        [HttpGet("music")]
-        public async Task<IActionResult> GetMusic([FromQuery] string musicTitle)
+        private readonly IMediator _mediator;
+
+        public StreamingController(IMediator mediator)
         {
-            var music = Directory.GetCurrentDirectory() + "/Music/NoOneLikeYou.mp3";
+            _mediator = mediator;
+        }
+
+        [HttpGet("get")]
+        public async Task<IActionResult> GetMusic([FromQuery] GetSongRequest request)
+        {
+            var result = await _mediator.Send(request);
+
+            if (!result.Success)
+            {
+                return Ok(result);
+            }
             
-            return File(new MemoryStream(System.IO.File.ReadAllBytes(music)), "audio/mpeg");
+            return File(new MemoryStream(result.Content), "audio/mpeg");
+        }
+
+        [HttpPost("add")]
+        public async Task<IActionResult> AddMusic([FromBody] AddSongRequest request)
+        {
+            if (request == null)
+            {
+                Console.WriteLine(Request.Body);
+                return Ok(new {Success = false});
+            }
+
+            
+            var result = await _mediator.Send(request);
+            
+            return Ok(result);
         }
     }
 }

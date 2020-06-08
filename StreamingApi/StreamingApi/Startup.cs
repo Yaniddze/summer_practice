@@ -31,7 +31,7 @@ namespace StreamingApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             var swaggerOptions = new SwaggerOptions();
             Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
 

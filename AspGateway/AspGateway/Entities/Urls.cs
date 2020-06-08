@@ -12,7 +12,8 @@ namespace AspGateway.Entities
 
         public class StreamingRoutes
         {
-            public static string Music = "/api/streaming/music";
+            public static string Get = "/api/streaming/get";
+            public static string Add = "/api/streaming/add";
         }
 
         public string Identity { get; set; }

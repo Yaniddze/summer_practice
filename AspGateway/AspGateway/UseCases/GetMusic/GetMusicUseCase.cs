@@ -1,9 +1,10 @@
-using System.IO;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using AspGateway.Entities;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace AspGateway.UseCases.GetMusic
 {
@@ -20,20 +21,28 @@ namespace AspGateway.UseCases.GetMusic
 
         public async Task<GetMusicAnswer> Handle(GetMusicRequest request, CancellationToken cancellationToken)
         {
-//            var content = new StringContent(
-//                JsonConvert.SerializeObject(request), 
-//                System.Text.Encoding.UTF8,
-//                "application/json"
-//            );
-            var url = $"{_urls.Streaming}{Urls.StreamingRoutes.Music}?musicTitle={request.MusicTitle}";
+            var url = $"{_urls.Streaming}{Urls.StreamingRoutes.Get}?musicTitle={request.MusicTitle}";
             var apiResponse = await _apiClient.GetAsync(
                 url, cancellationToken);
 
             apiResponse.EnsureSuccessStatusCode();
 
-            var responseString = await apiResponse.Content.ReadAsByteArrayAsync();
+            var responseString = await apiResponse.Content.ReadAsStringAsync();
 
-            return new GetMusicAnswer(){Music = responseString};
+            // If song not found then will come { Success:false, Errors:["Song not found"], content:null }
+            try
+            {
+                var result = JsonConvert.DeserializeObject<GetMusicAnswer>(responseString);
+                return result;
+            }
+            catch (Exception)
+            {
+                return new GetMusicAnswer()
+                {
+                    Success = true,
+                    Music = await apiResponse.Content.ReadAsByteArrayAsync(),
+                };
+            }
         }
     }
 }

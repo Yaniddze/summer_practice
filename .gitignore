@@ -2,3 +2,4 @@
 */.idea
 /.idea
 /nginx/certbot/logs
+/database/streaming/data

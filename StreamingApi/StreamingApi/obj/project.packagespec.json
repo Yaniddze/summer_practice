@@ -26,6 +26,30 @@
   "frameworks": {
     "netcoreapp3.1": {
       "dependencies": {
+        "AutoMapper.Extensions.ExpressionMapping": {
+          "target": "Package",
+          "version": "[3.1.2-preview01, )"
+        },
+        "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+          "target": "Package",
+          "version": "[7.0.0, )"
+        },
+        "FluentValidation": {
+          "target": "Package",
+          "version": "[9.0.0-preview5, )"
+        },
+        "MediatR": {
+          "target": "Package",
+          "version": "[8.0.1, )"
+        },
+        "MediatR.Extensions.Microsoft.DependencyInjection": {
+          "target": "Package",
+          "version": "[8.0.0, )"
+        },
+        "MongoDB.Driver": {
+          "target": "Package",
+          "version": "[2.10.4, )"
+        },
         "Swashbuckle.AspNetCore": {
           "target": "Package",
           "version": "[5.4.1, )"
