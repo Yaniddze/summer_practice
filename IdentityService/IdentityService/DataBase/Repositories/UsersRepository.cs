@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TestApi.DataBase.Context;
 using TestApi.DataBase.Entities;
 using TestApi.Entities;
+using TestApi.Entities.User;
 using TestApi.Repositories;
 
 namespace TestApi.DataBase.Repositories
@@ -100,23 +101,15 @@ namespace TestApi.DataBase.Repositories
                     founded.expiry_date = entity.UserToken.ExpiryDate;
                     founded.jwtid = entity.UserToken.JwtId;
                     founded.token = entity.UserToken.Token;
-                    founded.email = entity.Email;
-                    founded.isemailconfirmed = entity.IsEmailConfirmed;
+                    founded.email = entity.UserEmail.Email;
+                    founded.isemailconfirmed = entity.UserEmail.IsEmailConfirmed;
                     founded.login = entity.Login;
                     founded.password = entity.Password;
-                    founded.activation_url = entity.ActivationUrl;
+                    founded.activation_url = entity.UserEmail.ActivationUrl;
 
                     context.Entry(founded).State = EntityState.Modified;
                     await context.SaveChangesAsync();
                 }
-            }
-        }
-
-        public async Task SaveAsync()
-        {
-            using (var context = _contextProvider.GetContext())
-            {
-                await context.SaveChangesAsync();
             }
         }
     }

@@ -7,6 +7,7 @@ using TestApi.DataBase;
 using TestApi.DataBase.Context;
 using TestApi.DataBase.Repositories;
 using TestApi.Entities;
+using TestApi.Entities.User;
 using TestApi.Options;
 using TestApi.Repositories;
 using TestApi.UseCases.ActivateAccount;

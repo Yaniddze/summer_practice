@@ -9,6 +9,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using TestApi.Entities;
+using TestApi.Entities.User;
 using TestApi.Repositories;
 
 namespace TestApi.UseCases.RefreshToken
@@ -98,7 +99,7 @@ namespace TestApi.UseCases.RefreshToken
             return new RefreshTokenAnswer
             {
                 Success = true,
-                Email = storedUser.Email,
+                Email = storedUser.UserEmail.Email,
                 UserId = storedUser.Id,
             };
         }

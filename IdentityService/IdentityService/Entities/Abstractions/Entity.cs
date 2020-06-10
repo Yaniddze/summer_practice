@@ -1,6 +1,6 @@
 using System;
 
-namespace TestApi.Entities
+namespace TestApi.Entities.Abstractions
 {
     public abstract class Entity
     {
@@ -8,8 +8,7 @@ namespace TestApi.Entities
 
         public override bool Equals(object obj)
         {
-            var temp = obj as Entity;
-            return !ReferenceEquals(temp, null) && temp.Id == Id;
+            return obj is Entity temp && temp.Id == Id;
         }
 
         public override int GetHashCode()

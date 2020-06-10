@@ -3,7 +3,7 @@ using AutoMapper.Extensions.ExpressionMapping;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TestApi.DataBase.Entities;
-using TestApi.Entities;
+using TestApi.Entities.User;
 
 namespace TestApi.Installers
 {
@@ -27,9 +27,14 @@ namespace TestApi.Installers
                             }
                         ))
                     .ForMember(
-                        destination => destination.ActivationUrl,
+                        destination => destination.UserEmail,
                         map => map.MapFrom(
-                            source => source.activation_url
+                            source => new UserEmail
+                            {
+                                Email = source.email,
+                                ActivationUrl = source.activation_url,
+                                IsEmailConfirmed = source.isemailconfirmed,
+                            }
                         ));
                 options.CreateMap<User, UserDB>()
                     .ForMember(
@@ -50,7 +55,15 @@ namespace TestApi.Installers
                     )
                     .ForMember(
                         x => x.activation_url,
-                        map => map.MapFrom(source => source.ActivationUrl)
+                        map => map.MapFrom(source => source.UserEmail.ActivationUrl)
+                    )
+                    .ForMember(
+                        x => x.email,
+                        map => map.MapFrom(source => source.UserEmail.Email)
+                    )
+                    .ForMember(
+                        x => x.isemailconfirmed,
+                        map => map.MapFrom(source => source.UserEmail.IsEmailConfirmed)
                     );
             }, typeof(Startup));
         }

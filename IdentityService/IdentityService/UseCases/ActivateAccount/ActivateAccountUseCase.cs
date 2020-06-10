@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
-using TestApi.Entities;
+using TestApi.Entities.User;
 using TestApi.Repositories;
 
 namespace TestApi.UseCases.ActivateAccount
@@ -35,7 +35,7 @@ namespace TestApi.UseCases.ActivateAccount
                 };
             }
 
-            var founded = await _repository.FindOneWithPatternAsync(user => user.ActivationUrl == request.Url);
+            var founded = await _repository.FindOneWithPatternAsync(user => user.UserEmail.ActivationUrl == request.Url);
 
             if (founded == null)
             {
@@ -46,7 +46,7 @@ namespace TestApi.UseCases.ActivateAccount
                 };
             }
 
-            if (founded.IsEmailConfirmed)
+            if (founded.UserEmail.IsEmailConfirmed)
             {
                 return new ActivateAnswer
                 {
@@ -55,7 +55,7 @@ namespace TestApi.UseCases.ActivateAccount
                 };
             }
 
-            founded.IsEmailConfirmed = true;
+            founded.UserEmail.IsEmailConfirmed = true;
 
             await _repository.UpdateAsync(founded);
 

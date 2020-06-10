@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using TestApi.Entities;
+using TestApi.Entities.User;
 using TestApi.Options;
 using TestApi.Repositories;
 

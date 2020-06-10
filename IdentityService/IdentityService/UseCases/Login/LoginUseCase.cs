@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
-using TestApi.Entities;
+using TestApi.Entities.User;
 using TestApi.Repositories;
 
 namespace TestApi.UseCases.Login
@@ -34,7 +34,7 @@ namespace TestApi.UseCases.Login
             }
 
             var foundedUser = await _repository.FindOneWithPatternAsync(user =>
-                (user.Email == request.EmailOrLogin || user.Login == request.EmailOrLogin) 
+                (user.UserEmail.Email == request.EmailOrLogin || user.Login == request.EmailOrLogin) 
                 && 
                 user.Password == request.Password
             );
@@ -48,7 +48,7 @@ namespace TestApi.UseCases.Login
                 };
             }
 
-            if (!foundedUser.IsEmailConfirmed)
+            if (!foundedUser.UserEmail.IsEmailConfirmed)
             {
                 return new LoginAnswer
                 {
@@ -61,7 +61,7 @@ namespace TestApi.UseCases.Login
             {
                 Success = true,
                 UserId = foundedUser.Id,
-                Email = foundedUser.Email,
+                Email = foundedUser.UserEmail.Email,
             };
         }
     }

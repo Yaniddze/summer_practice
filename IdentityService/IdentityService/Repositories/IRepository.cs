@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TestApi.Entities;
+using TestApi.Entities.Abstractions;
 
 namespace TestApi.Repositories
 {
@@ -15,6 +16,5 @@ namespace TestApi.Repositories
         Task InsertAsync(TEntity entity);        
         Task DeleteAsync(Guid id);        
         Task UpdateAsync(TEntity entity);        
-        Task SaveAsync(); 
     }
 }

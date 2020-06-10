@@ -5,8 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
-using TestApi.Entities;
-using TestApi.Options;
+using TestApi.Entities.User;
 using TestApi.Repositories;
 
 namespace TestApi.UseCases.Registration
@@ -45,7 +44,7 @@ namespace TestApi.UseCases.Registration
                 };
             }
 
-            var foundedEmail = await _userRepository.FindOneWithPatternAsync(user => user.Email == request.Email);
+            var foundedEmail = await _userRepository.FindOneWithPatternAsync(user => user.UserEmail.Email == request.Email);
             if (!(foundedEmail is null))
             {
                 return new RegistrationAnswer
@@ -58,12 +57,15 @@ namespace TestApi.UseCases.Registration
             var tempUser = new User
             {
                 Id = Guid.NewGuid(),
-                Email = request.Email,
-                IsEmailConfirmed = false,
+                UserEmail = new UserEmail()
+                {
+                    IsEmailConfirmed = false,
+                    ActivationUrl = Guid.NewGuid(),
+                    Email = request.Email,
+                },
                 Login = request.Login,
                 Name = "",
                 Password = request.Password,
-                ActivationUrl = Guid.NewGuid(),
             };
             
             await _userRepository.InsertAsync(tempUser);
@@ -73,7 +75,7 @@ namespace TestApi.UseCases.Registration
                 Success = true,
                 Email = request.Email,
                 UserId = tempUser.Id,
-                ActivationUrl = tempUser.ActivationUrl,
+                ActivationUrl = tempUser.UserEmail.ActivationUrl,
             };
         }
     }
