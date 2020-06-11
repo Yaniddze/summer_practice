@@ -66,9 +66,17 @@
           "target": "Package",
           "version": "[5.0.0-preview.4.20220.10, )"
         },
+        "Newtonsoft.Json": {
+          "target": "Package",
+          "version": "[12.0.3, )"
+        },
         "Npgsql.EntityFrameworkCore.PostgreSQL": {
           "target": "Package",
           "version": "[5.0.0-preview4, )"
+        },
+        "RabbitMQ.Client": {
+          "target": "Package",
+          "version": "[6.1.0, )"
         },
         "Swashbuckle.AspNetCore": {
           "target": "Package",
