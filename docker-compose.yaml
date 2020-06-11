@@ -14,7 +14,7 @@ services:
     ports:
       - 80:80
       - 443:443
-    depends_on:
+    depends_on:W
       - web_app
     links:
       - gateway
@@ -60,10 +60,28 @@ services:
     restart: always
     depends_on:
       - postgres-identity
+      - rabbitmq
     # ports:
     #   - "8088:80"
     environment:
       - DB_CONNECTION_STRING=host=postgres-identity;port=5432;database=identity;username=postgres;password=postgres
+      - RABBIT_HOST=rabbitmq
+      - RABBIT_PORT=5672
+      - RABBIT_USER=guest
+      - RABBIT_PASSWORD=guest
+
+  message-service:
+    build: ./MessageService/MessageService
+    restart: always
+    depends_on:
+      - rabbitmq
+    # ports:
+    #   - "8088:80"
+    environment:
+      - RABBIT_HOST=rabbitmq
+      - RABBIT_PORT=5672
+      - RABBIT_USER=guest
+      - RABBIT_PASSWORD=guest
 
   streaming-service:
     build: ./StreamingApi/StreamingApi
@@ -87,3 +105,7 @@ services:
       - MONGO_INITDB_DATABASE=songs
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
+
+  rabbitmq:
+    image: 'rabbitmq:3.6-management-alpine'
+    restart: always

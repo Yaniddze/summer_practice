@@ -6,6 +6,8 @@ using FluentValidation;
 using MediatR;
 using TestApi.CQRS.Queries;
 using TestApi.Entities.User;
+using TestApi.EventBus.Abstractions;
+using TestApi.EventBus.Events;
 
 namespace TestApi.UseCases.Login
 {
@@ -13,11 +15,13 @@ namespace TestApi.UseCases.Login
     {
         private readonly IValidator<LoginRequest> _loginValidator;
         private readonly IFindQuery<User> _finder;
+        private readonly IEventBus _bus;
 
-        public LoginUseCase(IValidator<LoginRequest> loginValidator, IFindQuery<User> finder)
+        public LoginUseCase(IValidator<LoginRequest> loginValidator, IFindQuery<User> finder, IEventBus bus)
         {
             _loginValidator = loginValidator;
             _finder = finder;
+            _bus = bus;
         }
 
         public async Task<LoginAnswer> Handle(LoginRequest request, CancellationToken cancellationToken)
@@ -57,6 +61,8 @@ namespace TestApi.UseCases.Login
                 };
             }
 
+            _bus.Publish(new MainIntegrationEvent{ UserId = foundedUser.Id}, nameof(MainIntegrationEvent));
+            
             return new LoginAnswer
             {
                 Success = true,
