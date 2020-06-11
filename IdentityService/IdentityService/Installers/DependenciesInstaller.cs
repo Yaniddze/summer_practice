@@ -3,13 +3,15 @@ using System.Net.Mail;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TestApi.DataBase;
+using TestApi.CQRS.Commands;
+using TestApi.CQRS.Queries;
 using TestApi.DataBase.Context;
-using TestApi.DataBase.Repositories;
-using TestApi.Entities;
+using TestApi.DataBase.CQRS.Users.Commands.Add;
+using TestApi.DataBase.CQRS.Users.Commands.Update.ConfirmEmail;
+using TestApi.DataBase.CQRS.Users.Commands.Update.WriteToken;
+using TestApi.DataBase.CQRS.Users.Queries;
 using TestApi.Entities.User;
 using TestApi.Options;
-using TestApi.Repositories;
 using TestApi.UseCases.ActivateAccount;
 using TestApi.UseCases.Login;
 using TestApi.UseCases.RefreshToken;
@@ -21,9 +23,7 @@ namespace TestApi.Installers
     {
         public void installServices(IServiceCollection services, IConfiguration configuration)
         {
-//            services.AddSingleton(new EntityContext());
             services.AddScoped<IContextProvider, ContextProvider>();
-            services.AddScoped<IRepository<User>, UsersRepository>();
 
             // SmtpClient for sending emails
             var smtpClient = new SmtpClient("smtp.gmail.com", 587)
@@ -40,10 +40,18 @@ namespace TestApi.Installers
             configuration.Bind(nameof(ValidEmails), validEmails);
             services.AddSingleton(validEmails);
 
+            // Validators
             services.AddScoped<IValidator<ActivateRequest>, ActivateRequestValidator>();
             services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
             services.AddScoped<IValidator<LoginRequest>, LoginRequestValidation>();
             services.AddScoped<IValidator<RefreshTokenRequest>, RefreshRequestValidator>();
+
+            // CQRS
+            services.AddScoped<IFindQuery<User>, FindUserQuery>();
+            services.AddScoped<IGetByIdQuery<User>, GetUserById>();
+            services.AddScoped<ICommandHandler<AddUserCommand>, AddUserCommandHandler>();
+            services.AddScoped<ICommandHandler<ConfirmEmailCommand>, ConfirmEmailCommandHandler>();
+            services.AddScoped<ICommandHandler<WriteTokenCommand>, WriteTokenCommandHandler>();
         }
     }
 }

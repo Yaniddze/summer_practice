@@ -73,6 +73,10 @@
         "Swashbuckle.AspNetCore": {
           "target": "Package",
           "version": "[5.4.1, )"
+        },
+        "Z.EntityFramework.Plus.EFCore": {
+          "target": "Package",
+          "version": "[5.0.0-preview.3.20181.2-02, )"
         }
       },
       "imports": [

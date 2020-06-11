@@ -4,20 +4,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using TestApi.CQRS.Queries;
 using TestApi.Entities.User;
-using TestApi.Repositories;
 
 namespace TestApi.UseCases.Login
 {
     public class LoginUseCase : IRequestHandler<LoginRequest, LoginAnswer>
     {
-        private readonly IRepository<User> _repository;
         private readonly IValidator<LoginRequest> _loginValidator;
+        private readonly IFindQuery<User> _finder;
 
-        public LoginUseCase(IRepository<User> repository, IValidator<LoginRequest> loginValidator)
+        public LoginUseCase(IValidator<LoginRequest> loginValidator, IFindQuery<User> finder)
         {
-            _repository = repository;
             _loginValidator = loginValidator;
+            _finder = finder;
         }
 
         public async Task<LoginAnswer> Handle(LoginRequest request, CancellationToken cancellationToken)
@@ -33,7 +33,7 @@ namespace TestApi.UseCases.Login
                 };
             }
 
-            var foundedUser = await _repository.FindOneWithPatternAsync(user =>
+            var foundedUser = await _finder.FindOneAsync(user =>
                 (user.UserEmail.Email == request.EmailOrLogin || user.Login == request.EmailOrLogin) 
                 && 
                 user.Password == request.Password

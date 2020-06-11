@@ -5,20 +5,28 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using TestApi.CQRS.Commands;
+using TestApi.CQRS.Queries;
+using TestApi.DataBase.CQRS.Users.Commands.Add;
 using TestApi.Entities.User;
-using TestApi.Repositories;
 
 namespace TestApi.UseCases.Registration
 {
-    public class RegistrationUseCase: IRequestHandler<RegistrationRequest, RegistrationAnswer>
+    public class RegistrationUseCase : IRequestHandler<RegistrationRequest, RegistrationAnswer>
     {
-        private readonly IRepository<User> _userRepository;
         private readonly IValidator<RegistrationRequest> _requestValidator;
-        
-        public RegistrationUseCase(IRepository<User> userRepository, IValidator<RegistrationRequest> requestValidator)
+        private readonly ICommandHandler<AddUserCommand> _userAdder;
+        private readonly IFindQuery<User> _finder;
+
+        public RegistrationUseCase(
+            IValidator<RegistrationRequest> requestValidator,
+            IFindQuery<User> finder,
+            ICommandHandler<AddUserCommand> userAdder
+        )
         {
-            _userRepository = userRepository;
             _requestValidator = requestValidator;
+            _finder = finder;
+            _userAdder = userAdder;
         }
 
         public async Task<RegistrationAnswer> Handle(RegistrationRequest request, CancellationToken cancellationToken)
@@ -34,23 +42,23 @@ namespace TestApi.UseCases.Registration
                 };
             }
 
-            var foundedLogin = await _userRepository.FindOneWithPatternAsync(user => user.Login == request.Login);
+            var foundedLogin = await _finder.FindOneAsync(user => user.Login == request.Login);
             if (!(foundedLogin is null))
             {
                 return new RegistrationAnswer
                 {
                     Success = false,
-                    Errors = new List<string>{ "User with this login is already exist" }
+                    Errors = new List<string> {"User with this login is already exist"}
                 };
             }
 
-            var foundedEmail = await _userRepository.FindOneWithPatternAsync(user => user.UserEmail.Email == request.Email);
+            var foundedEmail = await _finder.FindOneAsync(user => user.UserEmail.Email == request.Email);
             if (!(foundedEmail is null))
             {
                 return new RegistrationAnswer
                 {
                     Success = false,
-                    Errors = new List<string>{ "User with this email is already exist" }
+                    Errors = new List<string> {"User with this email is already exist"}
                 };
             }
 
@@ -67,8 +75,11 @@ namespace TestApi.UseCases.Registration
                 Name = "",
                 Password = request.Password,
             };
-            
-            await _userRepository.InsertAsync(tempUser);
+
+            await _userAdder.HandleAsync(new AddUserCommand
+            {
+                UserToAdd = tempUser,
+            });
 
             return new RegistrationAnswer
             {

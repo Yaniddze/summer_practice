@@ -8,29 +8,30 @@ using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
-using TestApi.Entities;
+using TestApi.CQRS.Queries;
 using TestApi.Entities.User;
-using TestApi.Repositories;
 
 namespace TestApi.UseCases.RefreshToken
 {
-    public class RefreshTokenUseCase: IRequestHandler<RefreshTokenRequest, RefreshTokenAnswer>
+    public class RefreshTokenUseCase : IRequestHandler<RefreshTokenRequest, RefreshTokenAnswer>
     {
         private readonly TokenValidationParameters _tokenValidationParameters;
-        private readonly IRepository<User> _userRepository;
         private readonly IValidator<RefreshTokenRequest> _requestValidator;
+        private readonly IFindQuery<User> _finder;
 
-        public RefreshTokenUseCase(TokenValidationParameters tokenValidationParameters, IRepository<User> userRepository, IValidator<RefreshTokenRequest> requestValidator)
+        public RefreshTokenUseCase(
+            TokenValidationParameters tokenValidationParameters,
+            IValidator<RefreshTokenRequest> requestValidator, IFindQuery<User> finder)
         {
             _tokenValidationParameters = tokenValidationParameters;
-            _userRepository = userRepository;
             _requestValidator = requestValidator;
+            _finder = finder;
         }
 
         public async Task<RefreshTokenAnswer> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
         {
             var validationResult = await _requestValidator.ValidateAsync(request, cancellationToken);
-            
+
             if (!validationResult.IsValid)
             {
                 return new RefreshTokenAnswer
@@ -39,7 +40,7 @@ namespace TestApi.UseCases.RefreshToken
                     Errors = validationResult.Errors.Select(x => $"{x.PropertyName}: {x.ErrorMessage}").ToList()
                 };
             }
-            
+
             var validatedToken = GetPrincipalFromToken(request.Token);
 
             if (validatedToken == null)
@@ -47,7 +48,7 @@ namespace TestApi.UseCases.RefreshToken
                 return new RefreshTokenAnswer
                 {
                     Success = false,
-                    Errors = new List<string>{ "Invalid token" }
+                    Errors = new List<string> {"Invalid token"}
                 };
             }
 
@@ -62,19 +63,19 @@ namespace TestApi.UseCases.RefreshToken
                 return new RefreshTokenAnswer
                 {
                     Success = false,
-                    Errors = new List<string>{ "This token hasn't expired yet" }
+                    Errors = new List<string> {"This token hasn't expired yet"}
                 };
             }
 
             var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-            var storedUser = await _userRepository.FindOneWithPatternAsync(user => user.UserToken.Token == request.Token);
+            var storedUser = await _finder.FindOneAsync(user => user.UserToken.Token == request.Token);
             if (storedUser == null)
             {
                 return new RefreshTokenAnswer
                 {
                     Success = false,
-                    Errors = new List<string>{ "User with this token doesn't exists" }
+                    Errors = new List<string> {"User with this token doesn't exists"}
                 };
             }
 
@@ -83,7 +84,7 @@ namespace TestApi.UseCases.RefreshToken
                 return new RefreshTokenAnswer
                 {
                     Success = false,
-                    Errors = new List<string>{ "This refresh token has expired" }
+                    Errors = new List<string> {"This refresh token has expired"}
                 };
             }
 
@@ -92,10 +93,10 @@ namespace TestApi.UseCases.RefreshToken
                 return new RefreshTokenAnswer
                 {
                     Success = false,
-                    Errors = new List<string>{ "This refresh token does not match this JWT" }
+                    Errors = new List<string> {"This refresh token does not match this JWT"}
                 };
             }
-            
+
             return new RefreshTokenAnswer
             {
                 Success = true,
@@ -103,6 +104,7 @@ namespace TestApi.UseCases.RefreshToken
                 UserId = storedUser.Id,
             };
         }
+
         private ClaimsPrincipal GetPrincipalFromToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
