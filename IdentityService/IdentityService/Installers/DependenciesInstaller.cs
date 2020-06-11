@@ -23,7 +23,7 @@ namespace TestApi.Installers
     {
         public void installServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IContextProvider, ContextProvider>();
+            services.AddSingleton<IContextProvider, ContextProvider>();
 
             // SmtpClient for sending emails
             var smtpClient = new SmtpClient("smtp.gmail.com", 587)
@@ -41,17 +41,17 @@ namespace TestApi.Installers
             services.AddSingleton(validEmails);
 
             // Validators
-            services.AddScoped<IValidator<ActivateRequest>, ActivateRequestValidator>();
-            services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
-            services.AddScoped<IValidator<LoginRequest>, LoginRequestValidation>();
-            services.AddScoped<IValidator<RefreshTokenRequest>, RefreshRequestValidator>();
+            services.AddTransient<IValidator<ActivateRequest>, ActivateRequestValidator>();
+            services.AddTransient<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
+            services.AddTransient<IValidator<LoginRequest>, LoginRequestValidation>();
+            services.AddTransient<IValidator<RefreshTokenRequest>, RefreshRequestValidator>();
 
             // CQRS
-            services.AddScoped<IFindQuery<User>, FindUserQuery>();
-            services.AddScoped<IGetByIdQuery<User>, GetUserById>();
-            services.AddScoped<ICommandHandler<AddUserCommand>, AddUserCommandHandler>();
-            services.AddScoped<ICommandHandler<ConfirmEmailCommand>, ConfirmEmailCommandHandler>();
-            services.AddScoped<ICommandHandler<WriteTokenCommand>, WriteTokenCommandHandler>();
+            services.AddTransient<IFindQuery<User>, FindUserQuery>();
+            services.AddTransient<IGetByIdQuery<User>, GetUserById>();
+            services.AddTransient<ICommandHandler<AddUserCommand>, AddUserCommandHandler>();
+            services.AddTransient<ICommandHandler<ConfirmEmailCommand>, ConfirmEmailCommandHandler>();
+            services.AddTransient<ICommandHandler<WriteTokenCommand>, WriteTokenCommandHandler>();
         }
     }
 }
