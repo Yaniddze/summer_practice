@@ -14,7 +14,7 @@ services:
     ports:
       - 80:80
       - 443:443
-    depends_on:W
+    depends_on:
       - web_app
     links:
       - gateway
@@ -35,7 +35,7 @@ services:
       - gateway
 
   gateway:
-    build: ./AspGateway/AspGateway
+    build: ./DotNetApi/Gateway
     restart: always
     # ports:
     #   - "8088:80"
@@ -56,7 +56,7 @@ services:
       - POSTGRES_DB=identity
     
   identity-service:
-    build: ./IdentityService/IdentityService
+    build: ./DotNetApi/IdentityService
     restart: always
     depends_on:
       - postgres-identity
@@ -71,7 +71,7 @@ services:
       - RABBIT_PASSWORD=guest
 
   message-service:
-    build: ./MessageService/MessageService
+    build: ./DotNetApi/MessageService
     restart: always
     depends_on:
       - rabbitmq
@@ -84,7 +84,7 @@ services:
       - RABBIT_PASSWORD=guest
 
   streaming-service:
-    build: ./StreamingApi/StreamingApi
+    build: ./DotNetApi/StreamingService
     restart: always
     # ports:
     #   - "8089:80"

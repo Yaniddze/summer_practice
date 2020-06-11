@@ -1,0 +1,70 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/yan/Documents/summer_practice/IdentityService/Gateway/Gateway.csproj": {}
+  },
+  "projects": {
+    "/home/yan/Documents/summer_practice/IdentityService/Gateway/Gateway.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/yan/Documents/summer_practice/IdentityService/Gateway/Gateway.csproj",
+        "projectName": "Gateway",
+        "projectPath": "/home/yan/Documents/summer_practice/IdentityService/Gateway/Gateway.csproj",
+        "packagesPath": "/home/yan/.nuget/packages/",
+        "outputPath": "/home/yan/Documents/summer_practice/IdentityService/Gateway/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/yan/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "MediatR": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "MediatR.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.4.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}
