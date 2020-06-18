@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace MessageService.EventBus.Abstractions
+namespace EventBus.Abstractions
 {
     public interface IIntegrationEventHandler<TE>
         where TE: IIntegrationEvent

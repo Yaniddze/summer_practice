@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+WORKDIR /app
+
+WORKDIR /src
+
+COPY EventBus ./EventBus
+COPY MessageService ./MessageService
+
+# Build event bus
+WORKDIR /src/EventBus
+RUN dotnet build -c Release -o /app
+
+# Build message service
+WORKDIR /src/MessageService
+RUN dotnet build -c Release -o /app
+
+RUN dotnet publish -c Release -o /app/out
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+WORKDIR /app
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "MessageService.dll"]

@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj",
+    "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/IdentityService.csproj",
     "projectName": "IdentityService",
-    "projectPath": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj",
-    "outputPath": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/obj/",
+    "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/IdentityService.csproj",
+    "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/obj/",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netcoreapp3.1"
@@ -14,7 +14,11 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
-        "projectReferences": {}
+        "projectReferences": {
+          "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj": {
+            "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj"
+          }
+        }
       }
     },
     "warningProperties": {

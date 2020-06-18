@@ -71,22 +71,6 @@
         "runtime": {
           "lib/netcoreapp3.0/System.Threading.Channels.dll": {}
         }
-      },
-      "EventBus/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "3.1.5",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.5",
-          "Newtonsoft.Json": "12.0.3",
-          "RabbitMQ.Client": "6.1.0"
-        },
-        "compile": {
-          "bin/placeholder/EventBus.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/EventBus.dll": {}
-        }
       }
     }
   },
@@ -233,16 +217,12 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
-    },
-    "EventBus/1.0.0": {
-      "type": "project",
-      "path": "../EventBus/EventBus.csproj",
-      "msbuildProject": "../EventBus/EventBus.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "EventBus >= 1.0.0",
+      "Microsoft.Extensions.Configuration.Abstractions >= 3.1.5",
+      "Microsoft.Extensions.DependencyInjection.Abstractions >= 3.1.5",
       "Newtonsoft.Json >= 12.0.3",
       "RabbitMQ.Client >= 6.1.0"
     ]
@@ -253,11 +233,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/MessageService/MessageService.csproj",
-      "projectName": "MessageService",
-      "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/MessageService/MessageService.csproj",
+      "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj",
+      "projectName": "EventBus",
+      "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj",
       "packagesPath": "/home/yan/.nuget/packages/",
-      "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/MessageService/obj/",
+      "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/yan/.config/NuGet/NuGet.Config"
@@ -270,11 +250,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {
-            "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj": {
-              "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -286,6 +262,14 @@
     "frameworks": {
       "netcoreapp3.1": {
         "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": {
+            "target": "Package",
+            "version": "[3.1.5, )"
+          },
+          "Microsoft.Extensions.DependencyInjection.Abstractions": {
+            "target": "Package",
+            "version": "[3.1.5, )"
+          },
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[12.0.3, )"

@@ -1,6 +1,8 @@
 using System;
 using System.Net;
 using System.Net.Mail;
+using EventBus;
+using EventBus.Abstractions;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +15,6 @@ using TestApi.DataBase.CQRS.Users.Commands.Update.ConfirmEmail;
 using TestApi.DataBase.CQRS.Users.Commands.Update.WriteToken;
 using TestApi.DataBase.CQRS.Users.Queries;
 using TestApi.Entities.User;
-using TestApi.EventBus.Abstractions;
 using TestApi.Options;
 using TestApi.UseCases.ActivateAccount;
 using TestApi.UseCases.Login;
@@ -57,21 +58,23 @@ namespace TestApi.Installers
             services.AddTransient<ICommandHandler<WriteTokenCommand>, WriteTokenCommandHandler>();
             
             // RabbitMQ connection factory
-            var rabbitHost = Environment.GetEnvironmentVariable("RABBIT_HOST") ?? throw new ArgumentNullException();
-            var rabbitPort = int.Parse(Environment.GetEnvironmentVariable("RABBIT_PORT") ?? throw new ArgumentNullException());
-            var rabbitUser = Environment.GetEnvironmentVariable("RABBIT_USER") ?? throw new ArgumentNullException();
-            var rabbitPassword = Environment.GetEnvironmentVariable("RABBIT_PASSWORD") ?? throw new ArgumentNullException();
-            services.AddSingleton<IConnectionFactory>(new ConnectionFactory
+            var rabbitHost = Environment.GetEnvironmentVariable("RABBIT_HOST") 
+                             ?? throw new ArgumentNullException();
+            var rabbitPort = int.Parse(Environment.GetEnvironmentVariable("RABBIT_PORT") 
+                                       ?? throw new ArgumentNullException());
+            var rabbitUser = Environment.GetEnvironmentVariable("RABBIT_USER") 
+                             ?? throw new ArgumentNullException();
+            var rabbitPassword = Environment.GetEnvironmentVariable("RABBIT_PASSWORD") 
+                                 ?? throw new ArgumentNullException();
+            services.AddSingleton<IEventBus>(new RabbiBus(new ConnectionFactory
             {
                 HostName = rabbitHost,
                 Port = rabbitPort,
                 UserName = rabbitUser,
                 Password = rabbitPassword,
                 DispatchConsumersAsync = true,
-            });
-            
-            // Event Bus
-            services.AddSingleton<IEventBus, EventBus.EventBus>();
+            }, services.BuildServiceProvider()));
+
         }
     }
 }

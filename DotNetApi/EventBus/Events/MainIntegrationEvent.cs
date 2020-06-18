@@ -1,7 +1,7 @@
 using System;
-using TestApi.EventBus.Abstractions;
+using EventBus.Abstractions;
 
-namespace TestApi.EventBus.Events
+namespace EventBus.Events
 {
     public class MainIntegrationEvent: IIntegrationEvent
     {

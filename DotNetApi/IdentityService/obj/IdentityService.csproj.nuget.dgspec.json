@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj": {}
+    "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/IdentityService.csproj": {}
   },
   "projects": {
-    "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj": {
+    "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj",
-        "projectName": "IdentityService",
-        "projectPath": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj",
+        "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj",
+        "projectName": "EventBus",
+        "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj",
         "packagesPath": "/home/yan/.nuget/packages/",
-        "outputPath": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/obj/",
+        "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/yan/.config/NuGet/NuGet.Config"
@@ -25,6 +25,72 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/IdentityService.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/IdentityService.csproj",
+        "projectName": "IdentityService",
+        "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/IdentityService.csproj",
+        "packagesPath": "/home/yan/.nuget/packages/",
+        "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/yan/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj": {
+                "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

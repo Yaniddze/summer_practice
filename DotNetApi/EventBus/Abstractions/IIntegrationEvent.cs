@@ -1,4 +1,4 @@
-namespace MessageService.EventBus.Abstractions
+namespace EventBus.Abstractions
 {
     public interface IIntegrationEvent
     {

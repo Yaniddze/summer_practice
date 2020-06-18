@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/yan/Documents/summer_practice/IdentityService/StreamingService/StreamingService.csproj",
+    "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/StreamingService/StreamingService.csproj",
     "projectName": "StreamingService",
-    "projectPath": "/home/yan/Documents/summer_practice/IdentityService/StreamingService/StreamingService.csproj",
-    "outputPath": "/home/yan/Documents/summer_practice/IdentityService/StreamingService/obj/",
+    "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/StreamingService/StreamingService.csproj",
+    "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/StreamingService/obj/",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netcoreapp3.1"

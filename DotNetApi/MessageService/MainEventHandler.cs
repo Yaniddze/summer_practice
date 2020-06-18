@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using MessageService.EventBus.Abstractions;
+using EventBus.Abstractions;
+using EventBus.Events;
 
-namespace MessageService.EventBus.Events
+namespace MessageService
 {
     public class MainEventHandler: IIntegrationEventHandler<MainIntegrationEvent>
     {

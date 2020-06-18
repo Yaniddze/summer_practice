@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/yan/Documents/summer_practice/DotNetApi/Gateway/Gateway.csproj": {}
+    "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj": {}
   },
   "projects": {
-    "/home/yan/Documents/summer_practice/DotNetApi/Gateway/Gateway.csproj": {
+    "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/Gateway/Gateway.csproj",
-        "projectName": "Gateway",
-        "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/Gateway/Gateway.csproj",
+        "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj",
+        "projectName": "EventBus",
+        "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj",
         "packagesPath": "/home/yan/.nuget/packages/",
-        "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/Gateway/obj/",
+        "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/yan/.config/NuGet/NuGet.Config"
@@ -36,21 +36,21 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
-            "MediatR": {
+            "Microsoft.Extensions.Configuration.Abstractions": {
               "target": "Package",
-              "version": "[8.0.1, )"
+              "version": "[3.1.5, )"
             },
-            "MediatR.Extensions.Microsoft.DependencyInjection": {
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[3.1.5, )"
             },
-            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+            "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[3.1.4, )"
+              "version": "[12.0.3, )"
             },
-            "Swashbuckle.AspNetCore": {
+            "RabbitMQ.Client": {
               "target": "Package",
-              "version": "[5.4.1, )"
+              "version": "[6.1.0, )"
             }
           },
           "imports": [

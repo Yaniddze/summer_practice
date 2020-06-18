@@ -1,14 +1,14 @@
 using System;
 using System.Text;
-using MessageService.EventBus.Abstractions;
+using EventBus.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace MessageService.EventBus
+namespace EventBus
 {
-    public class EventBus : IEventBus
+    public class RabbiBus : IEventBus
     {
         private readonly IConnection _connection;
         private readonly IServiceProvider _serviceProvider;
@@ -16,9 +16,10 @@ namespace MessageService.EventBus
 
         public IModel Channel => _channel ?? (_channel = _connection.CreateModel());
 
-        public EventBus(IConnectionFactory connectionFactory, IServiceProvider serviceProvider)
+        public RabbiBus(IConnectionFactory connectionFactory, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+            
             _connection = connectionFactory.CreateConnection();
         }
 

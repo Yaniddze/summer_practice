@@ -25,8 +25,8 @@ const initialState: StarshipState = {
 };
 
 export const starshipsReducer = (
-    state = initialState,
-    action: StarshipsActionTypes,
+  state = initialState,
+  action: StarshipsActionTypes,
 ): StarshipState => {
   switch (action.type) {
     case STARSHIPS_START:

@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+WORKDIR /app
+
+WORKDIR /src
+
+COPY EventBus ./EventBus
+COPY IdentityService ./IdentityService
+
+# Build event bus
+WORKDIR /src/EventBus
+RUN dotnet build -c Release -o /app
+
+# Build message service
+WORKDIR /src/IdentityService
+RUN dotnet build -c Release -o /app
+
+RUN dotnet publish -c Release -o /app/out
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+WORKDIR /app
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "IdentityService.dll"]

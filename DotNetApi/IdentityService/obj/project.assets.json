@@ -1286,6 +1286,22 @@
         "runtime": {
           "lib/netstandard2.1/Z.Expressions.Eval.dll": {}
         }
+      },
+      "EventBus/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "3.1.5",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.5",
+          "Newtonsoft.Json": "12.0.3",
+          "RabbitMQ.Client": "6.1.0"
+        },
+        "compile": {
+          "bin/placeholder/EventBus.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EventBus.dll": {}
+        }
       }
     }
   },
@@ -4972,6 +4988,11 @@
         "z.expressions.eval.3.1.11.nupkg.sha512",
         "z.expressions.eval.nuspec"
       ]
+    },
+    "EventBus/1.0.0": {
+      "type": "project",
+      "path": "../EventBus/EventBus.csproj",
+      "msbuildProject": "../EventBus/EventBus.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4979,6 +5000,7 @@
       "AutoMapper >= 9.0.0",
       "AutoMapper.Extensions.ExpressionMapping >= 3.1.2-preview01",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 7.0.0",
+      "EventBus >= 1.0.0",
       "FluentValidation.AspNetCore >= 9.0.0-preview5",
       "FluentValidation.DependencyInjectionExtensions >= 9.0.0-preview5",
       "MediatR >= 8.0.1",
@@ -4999,11 +5021,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj",
+      "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/IdentityService.csproj",
       "projectName": "IdentityService",
-      "projectPath": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/IdentityService.csproj",
+      "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/IdentityService.csproj",
       "packagesPath": "/home/yan/.nuget/packages/",
-      "outputPath": "/home/yan/Documents/summer_practice/IdentityService/IdentityService/obj/",
+      "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/IdentityService/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/yan/.config/NuGet/NuGet.Config"
@@ -5016,7 +5038,11 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj": {
+              "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/EventBus/EventBus.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

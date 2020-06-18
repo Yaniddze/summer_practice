@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using EventBus.Abstractions;
+using EventBus.Events;
 using FluentValidation;
 using MediatR;
 using TestApi.CQRS.Queries;
 using TestApi.Entities.User;
-using TestApi.EventBus.Abstractions;
-using TestApi.EventBus.Events;
 
 namespace TestApi.UseCases.Login
 {

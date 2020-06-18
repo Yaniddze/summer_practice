@@ -2,43 +2,43 @@ version: "3.7"
 
 services:
 
-  server:
-    image: nginx:1.14.2-alpine
-    restart: always
-    volumes:
-      - ./nginx/public_html:/public_html
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/dhparam:/etc/nginx/dhparam
-      - ./nginx/certbot/conf:/etc/nginx/ssl
-      - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
-    ports:
-      - 80:80
-      - 443:443
-    depends_on:
-      - web_app
-    links:
-      - gateway
+  # server:
+  #   image: nginx:1.14.2-alpine
+  #   restart: always
+  #   volumes:
+  #     - ./nginx/public_html:/public_html
+  #     - ./nginx/conf.d:/etc/nginx/conf.d
+  #     - ./nginx/dhparam:/etc/nginx/dhparam
+  #     - ./nginx/certbot/conf:/etc/nginx/ssl
+  #     - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   depends_on:
+  #     - web_app
+  #   links:
+  #     - gateway
 
-  certbot:
-    image: certbot/certbot:latest
-    command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email yanrus09@gmail.com --agree-tos --no-eff-email -d yaniddze.com
-    volumes:
-      - ./nginx/certbot/conf:/etc/letsencrypt
-      - ./nginx/certbot/logs:/var/log/letsencrypt
-      - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email yanrus09@gmail.com --agree-tos --no-eff-email -d yaniddze.com
+  #   volumes:
+  #     - ./nginx/certbot/conf:/etc/letsencrypt
+  #     - ./nginx/certbot/logs:/var/log/letsencrypt
+  #     - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
 
-  web_app:
-    build: ./web_app/
-    volumes:
-      - ./nginx/public_html:/app/build
-    depends_on:
-      - gateway
+  # web_app:
+  #   build: ./web_app/
+  #   volumes:
+  #     - ./nginx/public_html:/app/build
+  #   depends_on:
+  #     - gateway
 
   gateway:
     build: ./DotNetApi/Gateway
     restart: always
-    # ports:
-    #   - "8088:80"
+    ports:
+      - "8088:80"
     depends_on:
       - identity-service 
       - streaming-service
@@ -56,7 +56,9 @@ services:
       - POSTGRES_DB=identity
     
   identity-service:
-    build: ./DotNetApi/IdentityService
+    build: 
+      context: ./DotNetApi
+      dockerfile: IdentityServiceDocker
     restart: always
     depends_on:
       - postgres-identity
@@ -71,7 +73,9 @@ services:
       - RABBIT_PASSWORD=guest
 
   message-service:
-    build: ./DotNetApi/MessageService
+    build:
+      context: ./DotNetApi
+      dockerfile: MessageServiceDocker
     restart: always
     depends_on:
       - rabbitmq

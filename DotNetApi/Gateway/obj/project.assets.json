@@ -3835,11 +3835,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/yan/Documents/summer_practice/IdentityService/Gateway/Gateway.csproj",
+      "projectUniqueName": "/home/yan/Documents/summer_practice/DotNetApi/Gateway/Gateway.csproj",
       "projectName": "Gateway",
-      "projectPath": "/home/yan/Documents/summer_practice/IdentityService/Gateway/Gateway.csproj",
+      "projectPath": "/home/yan/Documents/summer_practice/DotNetApi/Gateway/Gateway.csproj",
       "packagesPath": "/home/yan/.nuget/packages/",
-      "outputPath": "/home/yan/Documents/summer_practice/IdentityService/Gateway/obj/",
+      "outputPath": "/home/yan/Documents/summer_practice/DotNetApi/Gateway/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/yan/.config/NuGet/NuGet.Config"
