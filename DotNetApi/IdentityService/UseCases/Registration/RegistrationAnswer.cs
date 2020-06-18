@@ -13,6 +13,5 @@ namespace TestApi.UseCases.Registration
         public List<string> Errors { get; set; }
         public string Email { get; set; }
         public Guid UserId { get; set; }
-        public Guid ActivationUrl { get; set; }
     }
 }

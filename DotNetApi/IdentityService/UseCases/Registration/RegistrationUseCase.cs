@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using EventBus.Abstractions;
+using EventBus.Events;
 using FluentValidation;
 using MediatR;
 using TestApi.CQRS.Commands;
@@ -17,16 +19,17 @@ namespace TestApi.UseCases.Registration
         private readonly IValidator<RegistrationRequest> _requestValidator;
         private readonly ICommandHandler<AddUserCommand> _userAdder;
         private readonly IFindQuery<User> _finder;
+        private readonly IEventBus _bus;
 
         public RegistrationUseCase(
             IValidator<RegistrationRequest> requestValidator,
             IFindQuery<User> finder,
-            ICommandHandler<AddUserCommand> userAdder
-        )
+            ICommandHandler<AddUserCommand> userAdder, IEventBus bus)
         {
             _requestValidator = requestValidator;
             _finder = finder;
             _userAdder = userAdder;
+            _bus = bus;
         }
 
         public async Task<RegistrationAnswer> Handle(RegistrationRequest request, CancellationToken cancellationToken)
@@ -81,12 +84,18 @@ namespace TestApi.UseCases.Registration
                 UserToAdd = tempUser,
             });
 
+            _bus.Publish(new NewUserEvent
+            {
+                Email = request.Email,
+                UserId = tempUser.Id,
+                ActivationUrl = tempUser.UserEmail.ActivationUrl,
+            }, nameof(NewUserEvent));
+
             return new RegistrationAnswer
             {
                 Success = true,
                 Email = request.Email,
                 UserId = tempUser.Id,
-                ActivationUrl = tempUser.UserEmail.ActivationUrl,
             };
         }
     }

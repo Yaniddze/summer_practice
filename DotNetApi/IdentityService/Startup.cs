@@ -20,7 +20,7 @@ namespace TestApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.installServicesInAssemply(Configuration);
+            services.InstallServicesInAssembly(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

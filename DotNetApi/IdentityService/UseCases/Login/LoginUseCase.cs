@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EventBus.Abstractions;
-using EventBus.Events;
 using FluentValidation;
 using MediatR;
 using TestApi.CQRS.Queries;
@@ -15,13 +13,11 @@ namespace TestApi.UseCases.Login
     {
         private readonly IValidator<LoginRequest> _loginValidator;
         private readonly IFindQuery<User> _finder;
-        private readonly IEventBus _bus;
 
-        public LoginUseCase(IValidator<LoginRequest> loginValidator, IFindQuery<User> finder, IEventBus bus)
+        public LoginUseCase(IValidator<LoginRequest> loginValidator, IFindQuery<User> finder)
         {
             _loginValidator = loginValidator;
             _finder = finder;
-            _bus = bus;
         }
 
         public async Task<LoginAnswer> Handle(LoginRequest request, CancellationToken cancellationToken)
@@ -60,8 +56,6 @@ namespace TestApi.UseCases.Login
                     Errors = new List<string> {"Email is not confirmed"}
                 };
             }
-
-            _bus.Publish(new MainIntegrationEvent{ UserId = foundedUser.Id}, nameof(MainIntegrationEvent));
             
             return new LoginAnswer
             {

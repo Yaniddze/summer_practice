@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TestApi.Installers
+namespace MessageService.Installers
 {
     public static class InstallerExtension
     {
@@ -17,7 +17,7 @@ namespace TestApi.Installers
                 .Cast<IInstaller>()
                 .ToList();
             
-            installers.ForEach(installer => { installer.installServices(services, configuration); });
+            installers.ForEach(installer => { installer.InstallServices(services, configuration); });
 
         }
     }

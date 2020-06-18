@@ -29,16 +29,6 @@ namespace TestApi.Installers
         {
             services.AddSingleton<IContextProvider, ContextProvider>();
 
-            // SmtpClient for sending emails
-            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
-            {
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("FaceCrack1337@gmail.com", "qhnzfvbsmefzyvds"),
-            };
-            services.AddSingleton(smtpClient);
-
             // Valid emails, that mapped from appsettings.json
             var validEmails = new ValidEmails();
             configuration.Bind(nameof(ValidEmails), validEmails);

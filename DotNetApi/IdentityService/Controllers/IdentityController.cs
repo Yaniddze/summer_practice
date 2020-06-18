@@ -7,7 +7,6 @@ using TestApi.UseCases.GenerateToken;
 using TestApi.UseCases.Login;
 using TestApi.UseCases.RefreshToken;
 using TestApi.UseCases.Registration;
-using TestApi.UseCases.SendMail;
 
 namespace TestApi.Controllers
 {
@@ -32,14 +31,6 @@ namespace TestApi.Controllers
             };
 
             if (!registrationResult.Success) return Ok(result);
-
-            await _mediator.Send(new EmailRequest
-            {
-                Email = registrationResult.Email,
-                Message =
-                    $"Привет! Ссылка на активацию аккаунта: https://yaniddze.com/activate_account/{registrationResult.ActivationUrl}",
-                Subject = "Подтверждение регистрации",
-            });
 
             var tokens = await _mediator.Send(new GenerateTokenRequest
             {
