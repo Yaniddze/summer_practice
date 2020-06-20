@@ -1,5 +1,6 @@
 using System;
 using TestApi.CQRS.Commands;
+using TestApi.CQRS.Commands.Abstractions;
 
 namespace TestApi.DataBase.CQRS.Users.Commands.Update.ConfirmEmail
 {
