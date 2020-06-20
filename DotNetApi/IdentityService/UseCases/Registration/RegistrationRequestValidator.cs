@@ -6,7 +6,7 @@ namespace TestApi.UseCases.Registration
 {
     public class RegistrationRequestValidator: AbstractValidator<RegistrationRequest>
     {
-        public RegistrationRequestValidator(ValidEmails validEmails)
+        public RegistrationRequestValidator(ValidEmails validEmails, ValidPlatforms validPlatforms)
         {
             RuleFor(x => x.Email)
                 .NotNull()
@@ -23,6 +23,11 @@ namespace TestApi.UseCases.Registration
                 .NotNull()
                 .MinimumLength(5)
                 .MaximumLength(40);
+            
+            RuleFor(x => x.Platform)
+                .NotNull()
+                .Must(validPlatforms.Platforms.Contains)
+                .WithMessage("Platform must br one of " + string.Join(',', validPlatforms.Platforms));
         }
     }
 }

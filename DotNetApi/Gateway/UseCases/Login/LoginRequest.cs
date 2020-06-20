@@ -6,5 +6,6 @@ namespace Gateway.UseCases.Login
     {
         public string EmailOrLogin { get; set; }
         public string Password { get; set; }
+        public string Platform { get; set; }
     }
 }

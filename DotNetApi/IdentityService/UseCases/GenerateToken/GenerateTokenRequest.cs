@@ -5,7 +5,7 @@ namespace TestApi.UseCases.GenerateToken
 {
     public class GenerateTokenRequest: IRequest<GenerateTokenAnswer>
     {
-        public string Email { get; set; }
+        public string Platform { get; set; }
         public Guid UserId { get; set; }
     }
 }

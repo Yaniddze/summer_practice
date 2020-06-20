@@ -1,8 +1,7 @@
-using TestApi.CQRS.Commands;
 using TestApi.CQRS.Commands.Abstractions;
-using TestApi.Entities.User;
+using TestApi.Entities.Users;
 
-namespace TestApi.DataBase.CQRS.Users.Commands.Add
+namespace TestApi.CQRS.Commands
 {
     public class AddUserCommand: ICommand
     {

@@ -3,7 +3,7 @@ using Dapper;
 using TestApi.CQRS.Commands;
 using TestApi.CQRS.Commands.Abstractions;
 
-namespace TestApi.DataBase.CQRS
+namespace TestApi.DataBase.CQRS.Commands
 {
     public class AddUserCommandHandler : ICommandHandler<AddUserCommand>
     {

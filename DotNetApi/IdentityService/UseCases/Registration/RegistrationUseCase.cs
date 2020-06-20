@@ -8,9 +8,10 @@ using EventBus.Events;
 using FluentValidation;
 using MediatR;
 using TestApi.CQRS.Commands;
+using TestApi.CQRS.Commands.Abstractions;
 using TestApi.CQRS.Queries;
-using TestApi.DataBase.CQRS.Users.Commands.Add;
-using TestApi.Entities.User;
+using TestApi.CQRS.Queries.Abstractions;
+using TestApi.Entities.Users;
 
 namespace TestApi.UseCases.Registration
 {
@@ -18,18 +19,21 @@ namespace TestApi.UseCases.Registration
     {
         private readonly IValidator<RegistrationRequest> _requestValidator;
         private readonly ICommandHandler<AddUserCommand> _userAdder;
-        private readonly IFindQuery<User> _finder;
+        private readonly IQueryHandler<UserByLoginQuery, User> _loginFinder;
+        private readonly IQueryHandler<UserByEmailQuery, User> _emailFinder;
         private readonly IEventBus _bus;
 
         public RegistrationUseCase(
             IValidator<RegistrationRequest> requestValidator,
-            IFindQuery<User> finder,
-            ICommandHandler<AddUserCommand> userAdder, IEventBus bus)
+            ICommandHandler<AddUserCommand> userAdder, IEventBus bus, 
+            IQueryHandler<UserByLoginQuery, User> loginFinder, 
+            IQueryHandler<UserByEmailQuery, User> emailFinder)
         {
             _requestValidator = requestValidator;
-            _finder = finder;
             _userAdder = userAdder;
             _bus = bus;
+            _loginFinder = loginFinder;
+            _emailFinder = emailFinder;
         }
 
         public async Task<RegistrationAnswer> Handle(RegistrationRequest request, CancellationToken cancellationToken)
@@ -45,7 +49,10 @@ namespace TestApi.UseCases.Registration
                 };
             }
 
-            var foundedLogin = await _finder.FindOneAsync(user => user.Login == request.Login);
+            var foundedLogin = await _loginFinder.HandleAsync(new UserByLoginQuery
+            {
+                Login = request.Login,
+            });
             if (!(foundedLogin is null))
             {
                 return new RegistrationAnswer
@@ -55,7 +62,10 @@ namespace TestApi.UseCases.Registration
                 };
             }
 
-            var foundedEmail = await _finder.FindOneAsync(user => user.UserEmail.Email == request.Email);
+            var foundedEmail = await _emailFinder.HandleAsync(new UserByEmailQuery
+            {
+                Email = request.Email,
+            });
             if (!(foundedEmail is null))
             {
                 return new RegistrationAnswer
@@ -75,7 +85,6 @@ namespace TestApi.UseCases.Registration
                     Email = request.Email,
                 },
                 Login = request.Login,
-                Name = "",
                 Password = request.Password,
             };
 
@@ -94,7 +103,6 @@ namespace TestApi.UseCases.Registration
             return new RegistrationAnswer
             {
                 Success = true,
-                Email = request.Email,
                 UserId = tempUser.Id,
             };
         }

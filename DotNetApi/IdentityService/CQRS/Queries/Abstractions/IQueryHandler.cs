@@ -1,7 +1,10 @@
+using System.Threading.Tasks;
+
 namespace TestApi.CQRS.Queries.Abstractions
 {
-    public class IQueryHandler
+    public interface IQueryHandler<TQuery, TReturn>
+        where TQuery: IQuery<TReturn>
     {
-        
+        Task<TReturn> HandleAsync(TQuery handled);
     }
 }

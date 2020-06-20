@@ -1,11 +1,10 @@
 using System;
-using TestApi.CQRS.Commands;
 using TestApi.CQRS.Commands.Abstractions;
 
-namespace TestApi.DataBase.CQRS.Users.Commands.Update.ConfirmEmail
+namespace TestApi.CQRS.Commands
 {
     public class ConfirmEmailCommand: ICommand
     {
-        public Guid UserId { get; set; }
+        public Guid Activation { get; set; }
     }
 }

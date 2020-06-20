@@ -1,4 +1,7 @@
-$HEADER$namespace $NAMESPACE$
+namespace TestApi.CQRS.Queries.Abstractions
 {
-  public interface $INTERFACE$ {$END$}
+    public interface IQuery<TReturn>
+    {
+        
+    }
 }

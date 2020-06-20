@@ -1,4 +1,9 @@
-$HEADER$namespace $NAMESPACE$
+using TestApi.Entities.Abstractions;
+
+namespace TestApi.Entities.Platforms
 {
-  public class $CLASS$ {$END$}
+    public class Platform: Entity
+    {
+        public string Title { get; set; }
+    }
 }

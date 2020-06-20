@@ -35,7 +35,7 @@ namespace TestApi.Controllers
             var tokens = await _mediator.Send(new GenerateTokenRequest
             {
                 UserId = registrationResult.UserId,
-                Email = registrationResult.Email,
+                Platform = request.Platform,
             });
             result.Token = tokens.Token;
             return Ok(result);
@@ -56,7 +56,7 @@ namespace TestApi.Controllers
             var tokens = await _mediator.Send(new GenerateTokenRequest
             {
                 UserId = loginResult.UserId,
-                Email = loginResult.Email,
+                Platform = request.Platform,
             });
             result.Token = tokens.Token;
 
@@ -78,7 +78,7 @@ namespace TestApi.Controllers
             var tokens = await _mediator.Send(new GenerateTokenRequest
             {
                 UserId = refreshingResult.UserId,
-                Email = refreshingResult.Email,
+                Platform = request.Platform,
             });
 
             result.Token = tokens.Token;

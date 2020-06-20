@@ -1,6 +1,4 @@
 using System;
-using System.Net;
-using System.Net.Mail;
 using EventBus;
 using EventBus.Abstractions;
 using FluentValidation;
@@ -8,13 +6,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using TestApi.CQRS.Commands;
+using TestApi.CQRS.Commands.Abstractions;
 using TestApi.CQRS.Queries;
-using TestApi.DataBase.Context;
-using TestApi.DataBase.CQRS.Users.Commands.Add;
-using TestApi.DataBase.CQRS.Users.Commands.Update.ConfirmEmail;
-using TestApi.DataBase.CQRS.Users.Commands.Update.WriteToken;
-using TestApi.DataBase.CQRS.Users.Queries;
-using TestApi.Entities.User;
+using TestApi.CQRS.Queries.Abstractions;
+using TestApi.DataBase;
+using TestApi.DataBase.CQRS.Commands;
+using TestApi.DataBase.CQRS.Queries;
+using TestApi.Entities.Tokens;
+using TestApi.Entities.Users;
 using TestApi.Options;
 using TestApi.UseCases.ActivateAccount;
 using TestApi.UseCases.Login;
@@ -27,12 +26,20 @@ namespace TestApi.Installers
     {
         public void installServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IContextProvider, ContextProvider>();
+            services.AddSingleton(new ContextProvider(
+                Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
+                    ?? throw new ArgumentNullException()
+            ));
 
             // Valid emails, that mapped from appsettings.json
             var validEmails = new ValidEmails();
             configuration.Bind(nameof(ValidEmails), validEmails);
             services.AddSingleton(validEmails);
+            
+            // Valid platforms, that mapped from appsettings.json
+            var validPlatforms = new ValidPlatforms();
+            configuration.Bind(nameof(ValidPlatforms), validPlatforms);
+            services.AddSingleton(validPlatforms);
 
             // Validators
             services.AddTransient<IValidator<ActivateRequest>, ActivateRequestValidator>();
@@ -41,8 +48,11 @@ namespace TestApi.Installers
             services.AddTransient<IValidator<RefreshTokenRequest>, RefreshRequestValidator>();
 
             // CQRS
-            services.AddTransient<IFindQuery<User>, FindUserQuery>();
-            services.AddTransient<IGetByIdQuery<User>, GetUserById>();
+            services.AddTransient<IQueryHandler<AuthQuery, User>, AuthQueryHandler>();
+            services.AddTransient<IQueryHandler<UserByEmailQuery, User>, UserByEmailHandler>();
+            services.AddTransient<IQueryHandler<UserByLoginQuery, User>, UserByLoginHandler>();
+            services.AddTransient<IQueryHandler<TokenQuery, Token>, TokenQueryHandler>();
+
             services.AddTransient<ICommandHandler<AddUserCommand>, AddUserCommandHandler>();
             services.AddTransient<ICommandHandler<ConfirmEmailCommand>, ConfirmEmailCommandHandler>();
             services.AddTransient<ICommandHandler<WriteTokenCommand>, WriteTokenCommandHandler>();

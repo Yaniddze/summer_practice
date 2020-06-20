@@ -1,4 +1,4 @@
-namespace TestApi.CQRS.Commands
+namespace TestApi.CQRS.Commands.Abstractions
 {
     public interface ICommand
     {

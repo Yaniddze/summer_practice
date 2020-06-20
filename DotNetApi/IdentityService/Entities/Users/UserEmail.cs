@@ -1,6 +1,6 @@
 using System;
 
-namespace TestApi.Entities.User
+namespace TestApi.Entities.Users
 {
     public class UserEmail
     {

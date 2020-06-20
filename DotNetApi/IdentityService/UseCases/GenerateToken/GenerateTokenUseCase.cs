@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using TestApi.CQRS.Commands;
-using TestApi.CQRS.Queries;
-using TestApi.DataBase.CQRS.Users.Commands.Update.WriteToken;
-using TestApi.Entities.User;
+using TestApi.CQRS.Commands.Abstractions;
 using TestApi.Options;
 
 namespace TestApi.UseCases.GenerateToken
@@ -16,17 +14,14 @@ namespace TestApi.UseCases.GenerateToken
     public class GenerateTokenUseCase : IRequestHandler<GenerateTokenRequest, GenerateTokenAnswer>
     {
         private readonly JwtOptions _jwtOptions;
-        private readonly IGetByIdQuery<User> _getByIdQuery;
         private readonly ICommandHandler<WriteTokenCommand> _commandHandler;
 
         public GenerateTokenUseCase(
             JwtOptions jwtOptions,
-            IGetByIdQuery<User> getByIdQuery,
             ICommandHandler<WriteTokenCommand> commandHandler
         )
         {
             _jwtOptions = jwtOptions;
-            _getByIdQuery = getByIdQuery;
             _commandHandler = commandHandler;
         }
 
@@ -37,9 +32,7 @@ namespace TestApi.UseCases.GenerateToken
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, request.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, request.Email),
                     new Claim("id", request.UserId.ToString()),
                 }),
 //            LifeTime: 5 Minutes by default + 0.01 minutes
@@ -49,30 +42,21 @@ namespace TestApi.UseCases.GenerateToken
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            var foundedUser = await _getByIdQuery.InvokeAsync(request.UserId);
-            if (foundedUser == null)
+            
+            var tempCommand = new WriteTokenCommand
             {
-                return new GenerateTokenAnswer();
-            }
-
-            var tokenToUpdate = new UserToken
-            {
-                Token = tokenHandler.WriteToken(token),
+                UserId = request.UserId,
+                ExpiryDate = DateTime.UtcNow.AddYears(2),
                 JwtId = token.Id,
-                CreationDate = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddMonths(6),
+                Platform = request.Platform,
+                Token = tokenHandler.WriteToken(token),
             };
-
-            await _commandHandler.HandleAsync(new WriteTokenCommand
-            {
-                UserId = foundedUser.Id,
-                NewToken = tokenToUpdate
-            });
+            
+            await _commandHandler.HandleAsync(tempCommand);
 
             return new GenerateTokenAnswer
             {
-                Token = tokenToUpdate.Token,
+                Token = tempCommand.Token,
             };
         }
     }

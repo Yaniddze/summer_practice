@@ -9,7 +9,8 @@ using FluentValidation;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using TestApi.CQRS.Queries;
-using TestApi.Entities.User;
+using TestApi.CQRS.Queries.Abstractions;
+using TestApi.Entities.Tokens;
 
 namespace TestApi.UseCases.RefreshToken
 {
@@ -17,11 +18,12 @@ namespace TestApi.UseCases.RefreshToken
     {
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly IValidator<RefreshTokenRequest> _requestValidator;
-        private readonly IFindQuery<User> _finder;
+        private readonly IQueryHandler<TokenQuery, Token> _finder;
 
         public RefreshTokenUseCase(
             TokenValidationParameters tokenValidationParameters,
-            IValidator<RefreshTokenRequest> requestValidator, IFindQuery<User> finder)
+            IValidator<RefreshTokenRequest> requestValidator, 
+            IQueryHandler<TokenQuery, Token> finder)
         {
             _tokenValidationParameters = tokenValidationParameters;
             _requestValidator = requestValidator;
@@ -43,7 +45,7 @@ namespace TestApi.UseCases.RefreshToken
 
             var validatedToken = GetPrincipalFromToken(request.Token);
 
-            if (validatedToken == null)
+            if (validatedToken is null)
             {
                 return new RefreshTokenAnswer
                 {
@@ -69,17 +71,20 @@ namespace TestApi.UseCases.RefreshToken
 
             var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-            var storedUser = await _finder.FindOneAsync(user => user.UserToken.Token == request.Token);
-            if (storedUser == null)
+            var storedToken = await _finder.HandleAsync(new TokenQuery
+            {
+                Token = request.Token,
+            });
+            if (storedToken is null)
             {
                 return new RefreshTokenAnswer
                 {
                     Success = false,
-                    Errors = new List<string> {"User with this token doesn't exists"}
+                    Errors = new List<string> { "This token doesn't exists" }
                 };
             }
 
-            if (DateTime.UtcNow > storedUser.UserToken.ExpiryDate)
+            if (DateTime.UtcNow > storedToken.ExpiryDate)
             {
                 return new RefreshTokenAnswer
                 {
@@ -88,7 +93,7 @@ namespace TestApi.UseCases.RefreshToken
                 };
             }
 
-            if (storedUser.UserToken.JwtId != jti)
+            if (storedToken.JwtId != jti)
             {
                 return new RefreshTokenAnswer
                 {
@@ -100,8 +105,7 @@ namespace TestApi.UseCases.RefreshToken
             return new RefreshTokenAnswer
             {
                 Success = true,
-                Email = storedUser.UserEmail.Email,
-                UserId = storedUser.Id,
+                UserId = storedToken.UserId,
             };
         }
 

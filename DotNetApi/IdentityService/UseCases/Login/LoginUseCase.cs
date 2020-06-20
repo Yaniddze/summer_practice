@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using TestApi.CQRS.Queries;
-using TestApi.Entities.User;
+using TestApi.CQRS.Queries.Abstractions;
+using TestApi.Entities.Users;
 
 namespace TestApi.UseCases.Login
 {
     public class LoginUseCase : IRequestHandler<LoginRequest, LoginAnswer>
     {
         private readonly IValidator<LoginRequest> _loginValidator;
-        private readonly IFindQuery<User> _finder;
+        private readonly IQueryHandler<AuthQuery, User> _finder;
 
-        public LoginUseCase(IValidator<LoginRequest> loginValidator, IFindQuery<User> finder)
+        public LoginUseCase(IValidator<LoginRequest> loginValidator, IQueryHandler<AuthQuery, User> finder)
         {
             _loginValidator = loginValidator;
             _finder = finder;
@@ -33,13 +34,13 @@ namespace TestApi.UseCases.Login
                 };
             }
 
-            var foundedUser = await _finder.FindOneAsync(user =>
-                (user.UserEmail.Email == request.EmailOrLogin || user.Login == request.EmailOrLogin) 
-                && 
-                user.Password == request.Password
-            );
+            var foundedUser = await _finder.HandleAsync(new AuthQuery
+            {
+                Login = request.EmailOrLogin,
+                Password = request.Password,
+            });
 
-            if (foundedUser == null)
+            if (foundedUser is null)
             {
                 return new LoginAnswer
                 {
@@ -53,7 +54,7 @@ namespace TestApi.UseCases.Login
                 return new LoginAnswer
                 {
                     Success = false,
-                    Errors = new List<string> {"Email is not confirmed"}
+                    Errors = new List<string> { "Email is not confirmed" }
                 };
             }
             
@@ -61,7 +62,6 @@ namespace TestApi.UseCases.Login
             {
                 Success = true,
                 UserId = foundedUser.Id,
-                Email = foundedUser.UserEmail.Email,
             };
         }
     }
